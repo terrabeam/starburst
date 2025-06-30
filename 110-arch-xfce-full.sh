@@ -93,7 +93,7 @@ echo
 echo
 echo "Setting Default Applications"
 echo
-sudo cp $installed_dir/assets/xfce4/ /etc/skel/.config/xfce4/
+sudo cp -r $installed_dir/assets/xfce4/ /etc/skel/.config/xfce4/
 sudo cp $installed_dir/assets/mimeapps.list /etc/skel/.config/mimeapps.list
 
 echo

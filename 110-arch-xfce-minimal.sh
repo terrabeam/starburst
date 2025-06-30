@@ -91,6 +91,7 @@ tput sgr0
 echo
 
 sudo pacman -Rs --noconfirm mousepad
+sudo pacman -Rs --noconfirm parole
 sudo pacman -Rs --noconfirm xfburn
 sudo pacman -Rs --noconfirm xfce4-screenshooter
 sudo pacman -Rs --noconfirm xfce4-notes-plugin

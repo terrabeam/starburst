@@ -167,6 +167,7 @@ sudo pacman -S --noconfirm --needed btop
 sudo pacman -S --noconfirm --needed htop
 sudo pacman -S --noconfirm --needed sardi-flat-colora-variations-icons-git
 sudo pacman -S --noconfirm --needed bibata-cursor-theme
+sudo pacman -S --noconfirm --needed alacritty
 
 echo
 tput setaf 3

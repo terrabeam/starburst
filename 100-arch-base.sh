@@ -181,7 +181,7 @@ virt_type=$(systemd-detect-virt)
 case "$virt_type" in
     kvm)
         echo "Detected KVM. Installing qemu-guest-agent..."
-        sudo pacman -S --noconfirm --needed qemu-guest-agent
+        sudo pacman -S --noconfirm --needed qemu-guest-agent spice-vdagent
         sudo systemctl enable qemu-guest-agent.service
         ;;
     oracle)

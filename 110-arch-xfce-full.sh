@@ -93,8 +93,8 @@ echo
 echo
 echo "Setting Default Applications"
 echo
-sudo cp $installed_dir/attets/xfce4/helpers.rc /etc/skel/.config/xfce4/helpers.rc
-sudo cp $installed_dir/attets/mimeapps.list /etc/skel/.config/mimeapps.list
+sudo cp $installed_dir/assets/xfce4/helpers.rc /etc/skel/.config/xfce4/helpers.rc
+sudo cp $installed_dir/assets/mimeapps.list /etc/skel/.config/mimeapps.list
 
 echo
 tput setaf 6

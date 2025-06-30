@@ -168,6 +168,13 @@ sudo pacman -S --noconfirm --needed htop
 sudo pacman -S --noconfirm --needed sardi-flat-colora-variations-icons-git
 sudo pacman -S --noconfirm --needed bibata-cursor-theme
 sudo pacman -S --noconfirm --needed alacritty
+sudo pacman -S --noconfirm --needed hwinfo
+sudo pacman -S --noconfirm --needed lshw
+sudo pacman -S --noconfirm --needed reflector
+sudo pacman -S --noconfirm --needed expac
+sudo pacman -S --noconfirm --needed sparklines-git
+sudo pacman -S --noconfirm --needed downgrade
+sudo pacman -S --noconfirm --needed betterlockscreen
 
 echo
 tput setaf 3

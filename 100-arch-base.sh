@@ -165,6 +165,7 @@ sudo pacman -S --noconfirm --needed bash-completion
 sudo pacman -S --noconfirm --needed starship
 sudo pacman -S --noconfirm --needed btop
 sudo pacman -S --noconfirm --needed htop
+sudo pacman -S --noconfirm --needed sardi-flat-colora-variations-icons-git
 
 echo
 tput setaf 3

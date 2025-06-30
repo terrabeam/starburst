@@ -96,6 +96,46 @@ sudo pacman -Rs --noconfirm xfce4-screenshooter
 sudo pacman -Rs --noconfirm xfce4-notes-plugin
 
 echo
+tput setaf 2
+echo "########################################################################"
+echo "################### Configure XFCE4-settings"
+echo "########################################################################"
+tput sgr0
+echo
+
+#create some folders
+[ -d /etc/skel/.config ] || sudo mkdir -p /etc/skel/.config
+[ -d $HOME"/.bin" ] || mkdir -p $HOME"/.bin"
+[ -d $HOME"/.fonts" ] || mkdir -p $HOME"/.fonts"
+[ -d $HOME"/.icons" ] || mkdir -p $HOME"/.icons"
+[ -d $HOME"/.themes" ] || mkdir -p $HOME"/.themes"
+[ -d $HOME"/.local/share/icons" ] || mkdir -p $HOME"/.local/share/icons"
+[ -d $HOME"/.local/share/themes" ] || mkdir -p $HOME"/.local/share/themes"
+[ -d $HOME"/.local/share/applications" ] || mkdir -p $HOME"/.local/share/applications"
+[ -d $HOME"/.config" ] || mkdir -p $HOME"/.config"
+[ -d $HOME"/.config/xfce4" ] || mkdir -p $HOME"/.config/xfce4"
+[ -d $HOME"/.config/autostart" ] || mkdir -p $HOME"/.config/autostart"
+[ -d $HOME"/.config/xfce4/xfconf" ] || mkdir -p $HOME"/.config/xfce4/xfconf"
+[ -d $HOME"/.config/gtk-3.0" ] || mkdir -p $HOME"/.config/gtk-3.0"
+[ -d $HOME"/.config/gtk-4.0" ] || mkdir -p $HOME"/.config/gtk-4.0"
+[ -d $HOME"/.config/variety" ] || mkdir -p $HOME"/.config/variety"
+[ -d $HOME"/.config/fish" ] || mkdir -p $HOME"/.config/fish"
+[ -d $HOME"/.config/neofetch" ] || mkdir -p $HOME"/.config/neofetch"
+[ -d $HOME"/DATA" ] || mkdir -p $HOME"/DATA"
+
+echo
+tput setaf 2
+echo "########################################################################"
+echo "################### Personal settings to install - any OS"
+echo "########################################################################"
+tput sgr0
+echo
+
+echo
+echo "Enable fstrim timer"
+sudo systemctl enable fstrim.timer
+
+echo
 tput setaf 6
 echo "##############################################################"
 echo "###################  Enabling SDDM"

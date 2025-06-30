@@ -83,6 +83,20 @@ echo
 func_install_xfce4_full
 
 echo
+tput setaf 2
+echo "########################################################################"
+echo "################### Configure XFCE4-settings"
+echo "########################################################################"
+tput sgr0
+echo
+
+echo
+echo "Setting Default Applications"
+echo
+sudo cp $installed_dir/attets/xfce4/helpers.rc /etc/skel/.config/xfce4/helpers.rc
+sudo cp $installed_dir/attets/mimeapps.list /etc/skel/.config/mimeapps.list
+
+echo
 tput setaf 6
 echo "##############################################################"
 echo "###################  $(basename $0) done"

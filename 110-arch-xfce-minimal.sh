@@ -106,6 +106,10 @@ echo
 
 #create some folders
 [ -d /etc/skel/.config ] || sudo mkdir -p /etc/skel/.config
+[ -d /etc/skel/.config/xfce4 ] || sudo mkdir -p /etc/skel/.config/xfce4
+[ -d /etc/skel/.config/xfce4/panel ] || sudo mkdir -p /etc/skel/.config/xfce4/panel
+[ -d /etc/skel/.config/xfce4/xfconf ] || sudo mkdir -p /etc/skel/.config/xfce4/xfconf
+
 [ -d $HOME"/.bin" ] || mkdir -p $HOME"/.bin"
 [ -d $HOME"/.fonts" ] || mkdir -p $HOME"/.fonts"
 [ -d $HOME"/.icons" ] || mkdir -p $HOME"/.icons"

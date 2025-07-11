@@ -28,8 +28,9 @@ echo "Choose one of the following options:"
 echo
 echo "1) XFCE4 minimal"
 echo "2) XFCE4 full"
-echo "3) Plasma minimal"
-echo "4) Plasma full"
+echo "3) XFCE4 workstation"
+echo "4) Plasma minimal"
+echo "5) Plasma full"
 echo "X) None"
 echo "########################################################################"
 tput sgr0
@@ -45,9 +46,12 @@ case "$choice" in
         touch /tmp/install-xfce4-full
         ;;
     3)
-        touch /tmp/install-plasma-minimal
+        touch /tmp/install-xfce4-workstation
         ;;
     4)
+        touch /tmp/install-plasma-minimal
+        ;;
+    %)
         touch /tmp/install-plasma-full
         ;;
     [Xx])
@@ -104,13 +108,24 @@ if [ -f /tmp/install-xfce4-minimal ]; then
     sh 1020-arch-remove-apps*
     sh 1030-arch-base*
     sh 1110-arch-xfce-minimal*
+    sh 1120_arch-xfce-minimal-core*
 fi
 
 if [ -f /tmp/install-xfce4-full ]; then
     sh 1020-arch-remove-apps*
     sh 1030-arch-base*
     sh 1110-arch-xfce-minimal*
-    sh 1110-arch-xfce-full*
+    sh 1120_arch-xfce-minimal-core*
+    sh 1130-arch-xfce-full-core*
+fi
+
+if [ -f /tmp/install-xfce4-workstation ]; then
+    sh 1020-arch-remove-apps*
+    sh 1030-arch-base*
+    sh 1110-arch-xfce-minimal*
+    sh 1120_arch-xfce-minimal-core*
+    sh 1130-arch-xfce-full-core*
+    sh 1140-arch-xfce-full-ws*
 fi
 
 if [ -f /tmp/install-plasma-minimal ]; then
@@ -124,7 +139,7 @@ fi
 
 # installation of Tiling Window Managers
 if [ -f /tmp/install-chadwm ]; then
-    sh 1120-arch-chadwm*
+    sh 1200-arch-chadwm*
 fi
 
 if [ -f /tmp/install-hyprland ]; then

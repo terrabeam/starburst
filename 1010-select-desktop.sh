@@ -101,13 +101,13 @@ echo "################################################################"
 tput sgr0
 
 if [ -f /tmp/install-xfce4-minimal ]; then
-    sh 1020-arch-remove-unneeded*
+    sh 1020-arch-remove-apps*
     sh 1030-arch-base*
     sh 1110-arch-xfce-minimal*
 fi
 
 if [ -f /tmp/install-xfce4-full ]; then
-    sh 1020-arch-remove-unneeded*
+    sh 1020-arch-remove-apps*
     sh 1030-arch-base*
     sh 1110-arch-xfce-minimal*
     sh 1110-arch-xfce-full*

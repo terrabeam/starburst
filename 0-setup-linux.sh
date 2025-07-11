@@ -49,13 +49,13 @@ tput sgr0
 if [[ "$OS" == "arch" ]]; then
     echo "Running Arch Linux setup steps..."
     # your pacman install section goes here
-    sh 100-arch-base.sh
+    sh 1000-arch-base.sh
 fi
 
 if [[ "$OS" == "debian" ]]; then
     echo "Running Debian setup steps..."
     # your apt install section goes here
-    sh 100-debian-base.sh
+    sh 1000-debian-base.sh
 fi
 
 if [[ -z "$OS" ]]; then

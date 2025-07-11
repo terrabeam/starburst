@@ -175,6 +175,7 @@ sudo pacman -S --noconfirm --needed expac
 sudo pacman -S --noconfirm --needed sparklines-git
 sudo pacman -S --noconfirm --needed downgrade
 sudo pacman -S --noconfirm --needed betterlockscreen
+sudo pacman -S --noconfirm --needed pamac-aur
 
 echo
 tput setaf 3

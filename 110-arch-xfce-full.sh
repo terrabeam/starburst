@@ -58,9 +58,11 @@ func_install_xfce4_full() {
     echo
 
     list=(
-    meld
     code
     chromium
+    brave-bin
+    variety
+    pavucontrol
     )
 
     count=0

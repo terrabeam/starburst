@@ -161,6 +161,6 @@ tput sgr0
 rm -f /tmp/install-*
 
 ### Run final scripts
-sh 990-skel.sh
+sh 9990-skel.sh
 
 ### DONE

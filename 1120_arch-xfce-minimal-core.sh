@@ -21,9 +21,9 @@ tput sgr0
 echo
 
 #settings
-#sudo pacman -S --noconfirm --needed yuku-dot-files-git
-#sudo pacman -S --noconfirm --needed yuku-sddm-simplicity-git
-#sudo pacman -S --noconfirm --needed yuku-flat-remix-dark-git
+sudo pacman -S --noconfirm --needed yuku-dot-files-git
+sudo pacman -S --noconfirm --needed yuku-sddm-simplicity-git
+sudo pacman -S --noconfirm --needed yuku-flat-remix-dark-git
 #sudo pacman -S --noconfirm --needed edu-shells-git
 #sudo pacman -S --noconfirm --needed edu-xfce-git
 

@@ -33,12 +33,6 @@ tput sgr0
 echo
 
 echo
-echo "Setting Default Applications"
-echo
-sudo cp -rf $installed_dir/assets/xfce4/ /etc/skel/.config/
-sudo cp $installed_dir/assets/mimeapps.list /etc/skel/.config/mimeapps.list
-
-echo
 echo "Setting bashrc"
 echo
 sudo cp -v /etc/skel/.bashrc /etc/skel/.bashrc.starburst

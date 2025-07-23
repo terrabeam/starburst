@@ -26,7 +26,8 @@ sudo pacman -S --noconfirm --needed yuku-dot-files-git yuku-sddm-simplicity-git 
 #sudo pacman -S --noconfirm --needed edu-xfce-git
 
 #theming
-sudo pacman -S --noconfirm --needed arc-gtk-theme surfn-icons-git hardcode-fixer-git
+sudo pacman -S --noconfirm --needed arc-gtk-theme hardcode-fixer-git
+#sudo pacman -S --noconfirm --needed surfn-icons-git
 
 #tools
 sudo pacman -S --noconfirm --needed archlinux-logout-git arandr catfish dmenu galculator networkmanager network-manager-applet networkmanager-openvpn nitrogen numlockx pavucontrol playerctl xcolor xorg-xkill gparted

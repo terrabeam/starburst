@@ -29,27 +29,11 @@ tput sgr0
 echo
 
 #firmwares
-sudo pacman -S --noconfirm --needed aic94xx-firmware
-sudo pacman -S --noconfirm --needed linux-firmware-qlogic
-sudo pacman -S --noconfirm --needed upd72020x-fw
-sudo pacman -S --noconfirm --needed wd719x-firmware
-sudo pacman -S --noconfirm --needed mkinitcpio-firmware
+sudo pacman -S --noconfirm --needed aic94xx-firmware linux-firmware-qlogic upd72020x-fw wd719x-firmware mkinitcpio-firmware
+
 
 #fonts
-sudo pacman -S --noconfirm --needed font-manager
-sudo pacman -S --noconfirm --needed adobe-source-sans-fonts
-sudo pacman -S --noconfirm --needed noto-fonts
-sudo pacman -S --noconfirm --needed ttf-bitstream-vera
-sudo pacman -S --noconfirm --needed ttf-dejavu
-sudo pacman -S --noconfirm --needed ttf-droid
-sudo pacman -S --noconfirm --needed ttf-hack
-sudo pacman -S --noconfirm --needed ttf-inconsolata
-sudo pacman -S --noconfirm --needed ttf-liberation
-sudo pacman -S --noconfirm --needed ttf-roboto
-sudo pacman -S --noconfirm --needed ttf-roboto-mono
-sudo pacman -S --noconfirm --needed ttf-ubuntu-font-family
-sudo pacman -S --noconfirm --needed terminus-font
-sudo pacman -S --noconfirm --needed awesome-terminal-fonts
+sudo pacman -S --noconfirm --needed font-manager adobe-source-sans-fonts noto-fonts ttf-bitstream-vera ttf-dejavu ttf-droid ttf-hack ttf-inconsolata ttf-liberation ttf-roboto ttf-roboto-mono ttf-ubuntu-font-family terminus-font awesome-terminal-fonts
 
 #tools
 sudo pacman -S --noconfirm --needed ripgrep

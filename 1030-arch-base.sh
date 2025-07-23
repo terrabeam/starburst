@@ -36,72 +36,23 @@ sudo pacman -S --noconfirm --needed aic94xx-firmware linux-firmware-qlogic upd72
 sudo pacman -S --noconfirm --needed font-manager adobe-source-sans-fonts noto-fonts ttf-bitstream-vera ttf-dejavu ttf-droid ttf-hack ttf-inconsolata ttf-liberation ttf-roboto ttf-roboto-mono ttf-ubuntu-font-family terminus-font awesome-terminal-fonts
 
 #tools
-sudo pacman -S --noconfirm --needed ripgrep
-sudo pacman -S --noconfirm --needed meld
-sudo pacman -S --noconfirm --needed wget
-sudo pacman -S --noconfirm --needed curl
-sudo pacman -S --noconfirm --needed nano
-sudo pacman -S --noconfirm --needed fastfetch
-sudo pacman -S --noconfirm --needed lolcat
-sudo pacman -S --noconfirm --needed bash-completion
-sudo pacman -S --noconfirm --needed starship
-sudo pacman -S --noconfirm --needed btop
-sudo pacman -S --noconfirm --needed htop
-sudo pacman -S --noconfirm --needed alacritty
-sudo pacman -S --noconfirm --needed hwinfo
-sudo pacman -S --noconfirm --needed lshw
-sudo pacman -S --noconfirm --needed reflector
-sudo pacman -S --noconfirm --needed expac
-sudo pacman -S --noconfirm --needed sparklines-git
-sudo pacman -S --noconfirm --needed downgrade
-sudo pacman -S --noconfirm --needed betterlockscreen
-sudo pacman -S --noconfirm --needed pamac-aur
-sudo pacman -S --noconfirm --needed sublime-text-4
-sudo pacman -S --noconfirm --needed avahi
+sudo pacman -S --noconfirm --needed ripgrep meld wget curl nano fastfetch lolcat bash-completion starship btop htop alacritty hwinfo lshw reflector expac sparklines-git downgrade betterlockscreen pamac-aur sublime-text-4 avahi
 if [ ! -f /usr/bin/duf ]; then
   sudo pacman -S --noconfirm --needed duf
 fi
-sudo pacman -S --noconfirm --needed man-db
-sudo pacman -S --noconfirm --needed man-pages
-sudo pacman -S --noconfirm --needed pacmanlogviewer
-sudo pacman -S --noconfirm --needed paru-git
-sudo pacman -S --noconfirm --needed yay-git
-sudo pacman -S --noconfirm --needed thunar
-sudo pacman -S --noconfirm --needed thunar-archive-plugin
-sudo pacman -S --noconfirm --needed thunar-volman
-sudo pacman -S --noconfirm --needed tree
-sudo pacman -S --noconfirm --needed xdg-user-dirs
-sudo pacman -S --noconfirm --needed polkit-gnome
-sudo pacman -S --noconfirm --needed rate-mirrors
-sudo pacman -S --noconfirm --needed rsync
-sudo pacman -S --noconfirm --needed time
-sudo pacman -S --noconfirm --needed bat
-sudo pacman -S --noconfirm --needed ntp
-sudo pacman -S --noconfirm --needed nss-mdns
+sudo pacman -S --noconfirm --needed man-db man-pages pacmanlogviewer paru-git yay-git thunar thunar-archive-plugin thunar-volman tree xdg-user-dirs polkit-gnome rate-mirrors rsync time bat ntp nss-mdns
 
 #disk-tools
-sudo pacman -S --noconfirm --needed baobab
-sudo pacman -S --noconfirm --needed gnome-disk-utility
-sudo pacman -S --noconfirm --needed gvfs-smb
+sudo pacman -S --noconfirm --needed baobab gnome-disk-utility gvfs-smb hddtemp squashfs-tools
 #sudo pacman -S --noconfirm --needed gvfs-dnssd
-sudo pacman -S --noconfirm --needed hddtemp
-sudo pacman -S --noconfirm --needed squashfs-tools
 #sudo pacman -S --noconfirm --needed the_silver_searcher
 
 #archive-managers
-sudo pacman -S --noconfirm --needed zip
-sudo pacman -S --noconfirm --needed gzip
-sudo pacman -S --noconfirm --needed p7zip
-sudo pacman -S --noconfirm --needed unace
-sudo pacman -S --noconfirm --needed unrar
-sudo pacman -S --noconfirm --needed unzip
-sudo pacman -S --noconfirm --needed file-roller
+sudo pacman -S --noconfirm --needed zip gzip p7zip unace unrar unzip file-roller
 
 #theming
-sudo pacman -S --noconfirm --needed sardi-flat-colora-variations-icons-git
-sudo pacman -S --noconfirm --needed bibata-cursor-theme-bin
-#sudo pacman -S --noconfirm --needed breeze-icons
-sudo pacman -S --noconfirm --needed feh
+sudo pacman -S --noconfirm --needed bibata-cursor-theme-bin feh
+#sudo pacman -S --noconfirm --needed breeze-icons sardi-flat-colora-variations-icons-git
 
 #enable services
 sudo systemctl enable avahi-daemon.service

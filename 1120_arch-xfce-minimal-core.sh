@@ -22,12 +22,12 @@ echo
 
 #settings
 sudo pacman -S --noconfirm --needed yuku-dot-files-git yuku-sddm-simplicity-git yuku-flat-remix-dark-git
-#sudo pacman -S --noconfirm --needed edu-shells-git
-#sudo pacman -S --noconfirm --needed edu-xfce-git
+#sudo pacman -S --noconfirm --needed edu-shells-git edu-xfce-git
 
 #theming
 sudo pacman -S --noconfirm --needed arc-gtk-theme hardcode-fixer-git
 #sudo pacman -S --noconfirm --needed surfn-icons-git
 
 #tools
-sudo pacman -S --noconfirm --needed archlinux-logout-git arandr catfish dmenu galculator networkmanager network-manager-applet networkmanager-openvpn nitrogen numlockx pavucontrol playerctl xcolor xorg-xkill gparted
+sudo pacman -S --noconfirm --needed archlinux-logout-git arandr catfish dmenu galculator networkmanager network-manager-applet networkmanager-openvpn numlockx pavucontrol playerctl xcolor xorg-xkill gparted
+#sudo pacman -S --noconfirm --needed nitrogen

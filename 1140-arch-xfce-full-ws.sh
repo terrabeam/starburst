@@ -26,34 +26,23 @@ echo
 sudo pacman -S --noconfirm --needed code
 
 #internet
-sudo pacman -S --noconfirm --needed google-chrome
-sudo pacman -S --noconfirm --needed brave-bin
-#sudo pacman -S --noconfirm --needed discord
-#sudo pacman -S --noconfirm --needed firefox
-sudo pacman -S --noconfirm --needed insync
+sudo pacman -Rs --noconfirm chromium
+sudo pacman -S --noconfirm --needed google-chrome brave-bin insync
+#sudo pacman -S --noconfirm --needed discord firefox
 
 #theming
 sudo pacman -S --noconfirm --needed variety
 
 #media
-#sudo pacman -S --noconfirm --needed gimp
-#sudo pacman -S --noconfirm --needed inkscape
-sudo pacman -S --noconfirm --needed flameshot-git
-#sudo pacman -S --noconfirm --needed spotify
-sudo pacman -S --noconfirm --needed vlc
-sudo pacman -S --noconfirm --needed lollypop
+#sudo pacman -S --noconfirm --needed gimp inkscape spotify lollypop
+sudo pacman -S --noconfirm --needed flameshot-git vlc
 
 #shells
-sudo pacman -S --noconfirm --needed fish
-sudo pacman -S --noconfirm --needed zsh
-sudo pacman -S --noconfirm --needed zsh-completions
-sudo pacman -S --noconfirm --needed zsh-syntax-highlighting
-sudo pacman -S --noconfirm --needed oh-my-zsh-git
+sudo pacman -S --noconfirm --needed fish zsh zsh-completions zsh-syntax-highlighting oh-my-zsh-git
 
 #system-tools
 #sudo pacman -S --noconfirm --needed base-devel
 
 #tools
-sudo pacman -S --noconfirm --needed gitahead-git
-sudo pacman -S --noconfirm --needed wttr
-sudo pacman -S --noconfirm --needed system-config-printer
+#sudo pacman -S --noconfirm --needed gitahead-git
+sudo pacman -S --noconfirm --needed wttr system-config-printer

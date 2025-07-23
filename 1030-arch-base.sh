@@ -31,7 +31,6 @@ echo
 #firmwares
 sudo pacman -S --noconfirm --needed aic94xx-firmware linux-firmware-qlogic upd72020x-fw wd719x-firmware mkinitcpio-firmware
 
-
 #fonts
 sudo pacman -S --noconfirm --needed font-manager adobe-source-sans-fonts noto-fonts ttf-bitstream-vera ttf-dejavu ttf-droid ttf-hack ttf-inconsolata ttf-liberation ttf-roboto ttf-roboto-mono ttf-ubuntu-font-family terminus-font awesome-terminal-fonts
 
@@ -43,9 +42,8 @@ fi
 sudo pacman -S --noconfirm --needed man-db man-pages pacmanlogviewer paru-git yay-git thunar thunar-archive-plugin thunar-volman tree xdg-user-dirs polkit-gnome rate-mirrors rsync time bat ntp nss-mdns
 
 #disk-tools
-sudo pacman -S --noconfirm --needed baobab gnome-disk-utility gvfs-smb hddtemp squashfs-tools
-#sudo pacman -S --noconfirm --needed gvfs-dnssd
-#sudo pacman -S --noconfirm --needed the_silver_searcher
+sudo pacman -S --noconfirm --needed baobab gvfs-smb hddtemp squashfs-tools
+#sudo pacman -S --noconfirm --needed gvfs-dnssd the_silver_searcher gnome-disk-utility
 
 #archive-managers
 sudo pacman -S --noconfirm --needed zip gzip p7zip unace unrar unzip file-roller

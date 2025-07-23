@@ -23,7 +23,8 @@ sudo pacman -S --noconfirm --needed edu-rofi-git
 sudo pacman -S --noconfirm --needed edu-rofi-themes-git
 
 # All the software below will be installed on all desktops
-sudo pacman -S --noconfirm --needed archlinux-tools dconf-editor devtools hardinfo2 hw-probe logrotate lsb-release powertop inxi acpi plocate most namcap nomacs nm-connection-editor python-pylint python-pywal
+sudo pacman -S --noconfirm --needed archlinux-tools dconf-editor devtools hardinfo2 hw-probe logrotate lsb-release powertop inxi acpi plocate most namcap nm-connection-editor python-pylint python-pywal
+#sudo pacman -S --noconfirm --needed nomacs
 
 tput setaf 6
 echo "##############################################################"

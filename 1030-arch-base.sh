@@ -34,7 +34,7 @@ echo
 sudo pacman -S --noconfirm --needed aic94xx-firmware linux-firmware-qlogic upd72020x-fw wd719x-firmware mkinitcpio-firmware
 
 #fonts
-sudo pacman -S --noconfirm --needed font-manager adobe-source-sans-fonts noto-fonts ttf-bitstream-vera ttf-dejavu ttf-droid ttf-hack ttf-inconsolata ttf-liberation ttf-roboto ttf-roboto-mono ttf-ubuntu-font-family terminus-font awesome-terminal-fonts
+sudo pacman -S --noconfirm --needed font-manager adobe-source-sans-fonts noto-fonts ttf-bitstream-vera ttf-dejavu ttf-droid ttf-hack ttf-inconsolata ttf-liberation ttf-roboto ttf-roboto-mono ttf-ubuntu-font-family terminus-font awesome-terminal-fonts ttf-jetbrains-mono-nerd
 
 #tools
 sudo pacman -S --noconfirm --needed ripgrep meld wget curl nano fastfetch lolcat bash-completion starship btop htop alacritty hwinfo lshw reflector expac sparklines-git downgrade betterlockscreen pamac-aur sublime-text-4 avahi

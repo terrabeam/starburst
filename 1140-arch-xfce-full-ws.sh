@@ -31,7 +31,7 @@ sudo pacman -S --noconfirm --needed google-chrome brave-bin insync
 #sudo pacman -S --noconfirm --needed discord firefox
 
 #theming
-sudo pacman -S --noconfirm --needed variety
+#sudo pacman -S --noconfirm --needed variety
 
 #media
 #sudo pacman -S --noconfirm --needed gimp inkscape spotify lollypop

@@ -27,7 +27,7 @@ sudo pacman -S --noconfirm --needed yuku-dot-files-git yuku-sddm-simplicity-git 
 #sudo pacman -S --noconfirm --needed edu-shells-git edu-xfce-git
 
 #theming
-sudo pacman -S --noconfirm --needed arc-gtk-theme hardcode-fixer-git
+sudo pacman -S --noconfirm --needed arc-gtk-theme hardcode-fixer-git qt5-quickcontrols qt5-quickcontrols2
 #sudo pacman -S --noconfirm --needed surfn-icons-git
 
 #tools

@@ -107,27 +107,30 @@ echo "################################################################"
 tput sgr0
 
 if [ -f /tmp/install-xfce4-minimal ]; then
-    sh 1020-arch-remove-apps*
-    sh 1030-arch-base*
-    sh 1110-arch-xfce-minimal*
-    sh 1120_arch-xfce-minimal-core*
+    sh 1020-arch*
+    sh 1030-arch*
+    sh 1040-arch-*
+    sh 1110-arch-xfce*
+    sh 1120_arch-xfce*
 fi
 
 if [ -f /tmp/install-xfce4-full ]; then
-    sh 1020-arch-remove-apps*
-    sh 1030-arch-base*
-    sh 1110-arch-xfce-minimal*
-    sh 1120_arch-xfce-minimal-core*
-    sh 1130-arch-xfce-full-core*
+    sh 1020-arch*
+    sh 1030-arch*
+    sh 1040-arch-*
+    sh 1110-arch-xfce*
+    sh 1120_arch-xfce*
+    sh 1130-arch-xfce*
 fi
 
 if [ -f /tmp/install-xfce4-workstation ]; then
-    sh 1020-arch-remove-apps*
-    sh 1030-arch-base*
-    sh 1110-arch-xfce-minimal*
-    sh 1120_arch-xfce-minimal-core*
-    sh 1130-arch-xfce-full-core*
-    sh 1140-arch-xfce-full-ws*
+    sh 1020-arch-*
+    sh 1030-arch-*
+    sh 1040-arch-*
+    sh 1110-arch-xfce*
+    sh 1120_arch-xfce*
+    sh 1130-arch-xfce*
+    sh 1140-arch-xfce*
 fi
 
 if [ -f /tmp/install-plasma-minimal ]; then

@@ -33,7 +33,7 @@ if [[ ! -d "$pkg_dir" ]]; then
 fi
 
 # Install all local packages using pacman
-find "$pkg_dir" -maxdepth 1 -name '*.pkg.tar.zst' -print0 | sudo xargs -0 pacman -U --noconfirm
+#find "$pkg_dir" -maxdepth 1 -name '*.pkg.tar.zst' -print0 | sudo xargs -0 pacman -U --noconfirm
 
 
 echo
@@ -55,15 +55,15 @@ tput sgr0
 echo
 
 #first get tools for whatever distro
-sudo apt install -y sublime-text-4
+#sudo apt install -y sublime-text-4
 sudo apt install -y ripgrep
 sudo apt install -y meld
 sudo apt install -y wget
 sudo apt install -y curl
 sudo apt install -y nano
 sudo apt install -y fastfetch
-sudo apt install -y lolcat
-sudo apt install -y terminus-font
+#sudo apt install -y lolcat
+#sudo apt install -y terminus-font
 sudo apt install -y bash-completion
 
 tput setaf 3

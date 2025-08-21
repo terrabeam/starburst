@@ -34,6 +34,8 @@ tput setaf 1;
   sudo apt-get purge -y broadcom-sta-dkms r8168-dkms rtl8821cu-dkms
   sudo apt-get autoremove -y
   
+read -n1 -r -p "Press any key to continue..." key
+
   # Ensure at least one kernel (linux-image-amd64 + linux-headers-amd64) remains
   if dpkg -l | grep -q "^ii  linux-image-amd64" && dpkg -l | grep -q "^ii  linux-headers-amd64"; then
 
@@ -68,6 +70,8 @@ tput setaf 1;
       echo "Cannot proceed: At least one kernel must remain installed."
   fi
 
+read -n1 -r -p "Press any key to continue..." key
+
   echo
   echo "############################################################"
   echo " Remaining installed kernels:"
@@ -79,7 +83,7 @@ tput setaf 1;
   echo
   echo "Currently running kernel: $(uname -r)"
 
-
+read -n1 -r -p "Press any key to continue..." key
 
   echo
   tput setaf 3
@@ -98,9 +102,13 @@ tput setaf 1;
       xserver-xorg-video-vesa
   sudo apt-get autoremove -y
 
+read -n1 -r -p "Press any key to continue..." key
+
   sudo systemctl disable --now tlp.service
   sudo apt-get purge -y tlp
   sudo apt-get autoremove -y
+
+read -n1 -r -p "Press any key to continue..." key
 
   sudo apt-get purge -y vim vim-runtime vim-common vim-tiny
   sudo apt-get autoremove -y

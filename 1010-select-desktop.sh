@@ -23,6 +23,9 @@ else
     exit 1
 fi
 
+. /etc/os-release
+DISTRO=$ID
+
 echo
 tput setaf 3
 echo "################################################################"
@@ -51,19 +54,19 @@ read -r -p "Enter the number of your choice: " choice
 
 case "$choice" in
     1)
-        touch /tmp/install-xfce4-minimal-$OS
+        touch /tmp/install-xfce4-minimal
         ;;
     2)
-        touch /tmp/install-xfce4-full-$OS
+        touch /tmp/install-xfce4-full
         ;;
     3)
-        touch /tmp/install-xfce4-workstation-$OS
+        touch /tmp/install-xfce4-workstation
         ;;
     4)
-        touch /tmp/install-plasma-minimal-$OS
+        touch /tmp/install-plasma-minimal
         ;;
     5)
-        touch /tmp/install-plasma-full-$OS
+        touch /tmp/install-plasma-full
         ;;
     [Xx])
         echo "No desktop environment will be installed."
@@ -116,79 +119,49 @@ echo "Starting installation of chosen Desktop Environment"
 echo "################################################################"
 tput sgr0
 
-if [ -f /tmp/install-xfce4-minimal-arch ]; then
-    sh 1020-arch*
-    sh 1030-arch*
-    sh 1040-arch-*
-    sh 1110-xfce*
-    sh 1120-xfce*
-elif [ -f /tmp/install-xfce4-minimal-debian ]; then
-    sh 1020-debian*
-    sh 1030-debian*
-    sh 1040-debian-*
-    sh 1110-xfce*
-    #sh 1120-xfce*
+if [ -f /tmp/install-xfce4-minimal ]; then
+    sh 1020-$OS*
+    sh 1030-$OS*
+    sh 1040-$OS-*
+    sh 1110-$OS*
+    sh 1120-$OS*
 fi
 
-if [ -f /tmp/install-xfce4-full-arch ]; then
-    sh 1020-arch*
-    sh 1030-arch*
-    sh 1040-arch-*
-    sh 1110-arch-xfce*
-    sh 1120_arch-xfce*
-    sh 1130-arch-xfce*
-elif [ -f /tmp/install-xfce4-full-debian ]; then
-    sh 1020-debian*
-    sh 1030-debian*
-    sh 1040-debian-*
-    sh 1110-debian-xfce*
-    sh 1120_debian-xfce*
-    sh 1130-debian-xfce*
+if [ -f /tmp/install-xfce4-full ]; then
+    sh 1020-$OS*
+    sh 1030-$OS*
+    sh 1040-$OS-*
+    sh 1110-$OS-xfce*
+    sh 1120-$OS-xfce*
+    sh 1130-$OS-xfce*
 fi
 
-if [ -f /tmp/install-xfce4-workstation-arch ]; then
-    sh 1020-arch-*
-    sh 1030-arch-*
-    sh 1040-arch-*
-    sh 1110-arch-xfce*
-    sh 1120_arch-xfce*
-    sh 1130-arch-xfce*
-    sh 1140-arch-xfce*
-elif [ -f /tmp/install-xfce4-workstation-debian ]; then
-    sh 1020-debian-*
-    sh 1030-debian-*
-    sh 1040-debian-*
-    sh 1110-debian-xfce*
-    sh 1120_debian-xfce*
-    sh 1130-debian-xfce*
-    sh 1140-debian-xfce*
+if [ -f /tmp/install-xfce4-workstation ]; then
+    sh 1020-$OS-*
+    sh 1030-$OS-*
+    sh 1040-$OS-*
+    sh 1110-$OS-xfce*
+    sh 1120-$OS-xfce*
+    sh 1130-$OS-xfce*
+    sh 1140-$OS-xfce*
 fi
 
-if [ -f /tmp/install-plasma-minimal-arch ]; then
-    sh 1110-arch-plasma-minimal*
-elif [ -f /tmp/install-plasma-minimal-debian ]; then
-    sh 1110-debian-plasma-minimal*
+if [ -f /tmp/install-plasma-minimal ]; then
+    sh 1110-$OS-plasma-minimal*
 fi
 
-if [ -f /tmp/install-plasma-full-arch ]; then
-    sh 1110-arch-plasma-minimal*
-    sh 1110-arch-plasma-full*
-elif [ -f /tmp/install-plasma-full-debian ]; then
-    sh 1110-debian-plasma-minimal*
-    sh 1110-debian-plasma-full*
+if [ -f /tmp/install-plasma-full ]; then
+    sh 1110-$OS-plasma-minimal*
+    sh 1110-$OS-plasma-full*
 fi
 
 # installation of Tiling Window Managers
-if [ -f /tmp/install-chadwm-arch ]; then
-    sh 1200-arch-chadwm*
-elif [ -f /tmp/install-chadwm-debian ]; then
-    sh 1200-debian-chadwm*
+if [ -f /tmp/install-chadwm ]; then
+    sh 1200-$OS-chadwm*
 fi
 
-if [ -f /tmp/install-hyprland-arch ]; then
-    sh 1120-arch-hyprland*
-elif [ -f /tmp/install-hyprland-debian ]; then
-    sh 1200-debian-hyprland*
+if [ -f /tmp/install-hyprland ]; then
+    sh 1120-$OS-hyprland*
 fi
 
 tput setaf 3
@@ -206,6 +179,6 @@ tput sgr0
 rm -f /tmp/install-*
 
 ### Run final scripts
-sh 9990-skel.sh
+#sh 9990-skel.sh
 
 ### DONE

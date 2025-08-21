@@ -127,7 +127,7 @@ elif [ -f /tmp/install-xfce4-minimal-debian ]; then
     sh 1030-debian*
     sh 1040-debian-*
     sh 1110-xfce*
-    sh 1120-xfce*
+    #sh 1120-xfce*
 fi
 
 if [ -f /tmp/install-xfce4-full-arch ]; then

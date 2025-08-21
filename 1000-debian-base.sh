@@ -36,38 +36,15 @@ fi
 find "$pkg_dir" -maxdepth 1 -name '*.pkg.tar.zst' -print0 | sudo xargs -0 pacman -U --noconfirm
 
 
-# personal pacman.conf
-if [[ ! -f /etc/pacman.conf.starburst ]]; then
-    echo
-    tput setaf 2
-    echo "################################################################################"
-    echo "Copying /etc/pacman.conf to /etc/pacman.conf.starburst"
-    echo "################################################################################"
-    tput sgr0
-    echo
-    sudo cp -v /etc/pacman.conf /etc/pacman.conf.starburst
-    echo
-else
-    echo
-    tput setaf 2
-    echo "################################################################################"
-    echo "Backup already exists: /etc/pacman.conf.starburst"
-    echo "################################################################################"
-    tput sgr0
-    echo
-fi
-
-sudo cp -v $installed_dir/config-files/pacman.conf /etc/pacman.conf
-
 echo
 tput setaf 2
 echo "################################################################################"
-echo "Updating the system - sudo pacman -Syyu"
+echo "Updating the system - sudo apt update"
 echo "################################################################################"
 tput sgr0
 echo
 
-sudo pacman -Syyu --noconfirm
+sudo apt update && sudo apt full-upgrade -y
 
 echo
 tput setaf 2
@@ -78,16 +55,16 @@ tput sgr0
 echo
 
 #first get tools for whatever distro
-sudo pacman -S --noconfirm --needed sublime-text-4
-sudo pacman -S --noconfirm --needed ripgrep
-sudo pacman -S --noconfirm --needed meld
-sudo pacman -S --noconfirm --needed wget
-sudo pacman -S --noconfirm --needed curl
-sudo pacman -S --noconfirm --needed nano
-sudo pacman -S --noconfirm --needed fastfetch
-sudo pacman -S --noconfirm --needed lolcat
-sudo pacman -S --noconfirm --needed terminus-font
-sudo pacman -S --noconfirm --needed bash-completion
+sudo apt install -y sublime-text-4
+sudo apt install -y ripgrep
+sudo apt install -y meld
+sudo apt install -y wget
+sudo apt install -y curl
+sudo apt install -y nano
+sudo apt install -y fastfetch
+sudo apt install -y lolcat
+sudo apt install -y terminus-font
+sudo apt install -y bash-completion
 
 tput setaf 3
 echo "################################################################"

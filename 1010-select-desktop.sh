@@ -23,9 +23,6 @@ else
     exit 1
 fi
 
-. /etc/os-release
-DISTRO=$ID
-
 echo
 tput setaf 3
 echo "################################################################"
@@ -120,48 +117,48 @@ echo "################################################################"
 tput sgr0
 
 if [ -f /tmp/install-xfce4-minimal ]; then
-    sh 1020-$OS*
-    sh 1030-$OS*
-    sh 1040-$OS-*
-    sh 1110-$OS*
-    sh 1120-$OS*
+    bash 1020-$OS*
+    bash 1030-$OS*
+    bash 1040-$OS-*
+    bash 1110-$OS*
+    bash 1120-$OS*
 fi
 
 if [ -f /tmp/install-xfce4-full ]; then
-    sh 1020-$OS*
-    sh 1030-$OS*
-    sh 1040-$OS-*
-    sh 1110-$OS-xfce*
-    sh 1120-$OS-xfce*
-    sh 1130-$OS-xfce*
+    bash 1020-$OS*
+    bash 1030-$OS*
+    bash 1040-$OS-*
+    bash 1110-$OS-xfce*
+    bash 1120-$OS-xfce*
+    bash 1130-$OS-xfce*
 fi
 
 if [ -f /tmp/install-xfce4-workstation ]; then
-    sh 1020-$OS-*
-    sh 1030-$OS-*
-    sh 1040-$OS-*
-    sh 1110-$OS-xfce*
-    sh 1120-$OS-xfce*
-    sh 1130-$OS-xfce*
-    sh 1140-$OS-xfce*
+    bash 1020-$OS-*
+    bash 1030-$OS-*
+    bash 1040-$OS-*
+    bash 1110-$OS-xfce*
+    bash 1120-$OS-xfce*
+    bash 1130-$OS-xfce*
+    bash 1140-$OS-xfce*
 fi
 
 if [ -f /tmp/install-plasma-minimal ]; then
-    sh 1110-$OS-plasma-minimal*
+    bash 1110-$OS-plasma-minimal*
 fi
 
 if [ -f /tmp/install-plasma-full ]; then
-    sh 1110-$OS-plasma-minimal*
-    sh 1110-$OS-plasma-full*
+    bash 1110-$OS-plasma-minimal*
+    bash 1110-$OS-plasma-full*
 fi
 
 # installation of Tiling Window Managers
 if [ -f /tmp/install-chadwm ]; then
-    sh 1200-$OS-chadwm*
+    bash 1200-$OS-chadwm*
 fi
 
 if [ -f /tmp/install-hyprland ]; then
-    sh 1120-$OS-hyprland*
+    bash 1120-$OS-hyprland*
 fi
 
 tput setaf 3

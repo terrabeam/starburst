@@ -55,7 +55,7 @@ fi
 if [[ "$OS" == "debian" ]]; then
     echo "Running Debian setup steps..."
     # your apt install section goes here
-    sh 1000-debian-base.sh
+    bash 1000-debian-base.sh
 fi
 
 if [[ -z "$OS" ]]; then

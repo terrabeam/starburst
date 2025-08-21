@@ -69,6 +69,19 @@ tput setaf 1;
   fi
 
   echo
+  echo "############################################################"
+  echo " Remaining installed kernels:"
+  echo "############################################################"
+
+  # List installed kernel images
+  dpkg -l | grep '^ii' | grep 'linux-image-[0-9]' | awk '{print $2, $3}'
+
+  echo
+  echo "Currently running kernel: $(uname -r)"
+
+
+
+  echo
   tput setaf 3
   echo "########################################################################"
   echo "######## Removing the drivers"

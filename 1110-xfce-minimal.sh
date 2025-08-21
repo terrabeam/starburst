@@ -40,7 +40,7 @@ install_pkgs() {
             ;;
         debian|ubuntu)
             sudo apt-get update
-            sudo apt-get install -y "$@"
+            sudo apt-get install --no-install-recommends -y "$@"
             ;;
     esac
 }

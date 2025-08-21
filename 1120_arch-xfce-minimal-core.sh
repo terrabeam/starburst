@@ -12,6 +12,8 @@
 #tput setaf 8 = light blue
 ##################################################################################################################
 
+installed_dir=$(dirname $(readlink -f $(basename `pwd`)))
+
 echo
 tput setaf 2
 echo "########################################################################"
@@ -21,30 +23,13 @@ tput sgr0
 echo
 
 #settings
-sudo pacman -S --noconfirm --needed yuku-dot-files-git
-sudo pacman -S --noconfirm --needed yuku-sddm-simplicity-git
-sudo pacman -S --noconfirm --needed yuku-flat-remix-dark-git
-#sudo pacman -S --noconfirm --needed edu-shells-git
-#sudo pacman -S --noconfirm --needed edu-xfce-git
+sudo pacman -S --noconfirm --needed yuku-dot-files-git yuku-sddm-simplicity-git yuku-flat-remix-dark-git
+#sudo pacman -S --noconfirm --needed edu-shells-git edu-xfce-git
 
 #theming
-sudo pacman -S --noconfirm --needed arc-gtk-theme
-sudo pacman -S --noconfirm --needed surfn-icons-git
-sudo pacman -S --noconfirm --needed hardcode-fixer-git
+sudo pacman -S --noconfirm --needed arc-gtk-theme hardcode-fixer-git qt5-quickcontrols qt5-quickcontrols2
+#sudo pacman -S --noconfirm --needed surfn-icons-git
 
 #tools
-sudo pacman -S --noconfirm --needed archlinux-logout-git
-sudo pacman -S --noconfirm --needed arandr
-sudo pacman -S --noconfirm --needed catfish
-sudo pacman -S --noconfirm --needed dmenu
-sudo pacman -S --noconfirm --needed galculator
-sudo pacman -S --noconfirm --needed networkmanager
-sudo pacman -S --noconfirm --needed network-manager-applet
-sudo pacman -S --noconfirm --needed networkmanager-openvpn
-sudo pacman -S --noconfirm --needed nitrogen
-sudo pacman -S --noconfirm --needed numlockx
-sudo pacman -S --noconfirm --needed pavucontrol
-sudo pacman -S --noconfirm --needed playerctl
-sudo pacman -S --noconfirm --needed xcolor
-sudo pacman -S --noconfirm --needed xorg-xkill
-sudo pacman -S --noconfirm --needed gparted
+sudo pacman -S --noconfirm --needed archlinux-logout-git arandr catfish dmenu galculator networkmanager network-manager-applet networkmanager-openvpn numlockx pavucontrol playerctl xcolor xorg-xkill gparted
+#sudo pacman -S --noconfirm --needed nitrogen

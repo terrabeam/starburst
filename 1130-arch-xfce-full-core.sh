@@ -12,6 +12,8 @@
 #tput setaf 8 = light blue
 ##################################################################################################################
 
+installed_dir=$(dirname $(readlink -f $(basename `pwd`)))
+
 echo
 tput setaf 2
 echo "########################################################################"
@@ -31,12 +33,6 @@ echo "################### Configure XFCE4-settings"
 echo "########################################################################"
 tput sgr0
 echo
-
-echo
-echo "Setting Default Applications"
-echo
-sudo cp -rf $installed_dir/assets/xfce4/ /etc/skel/.config/
-sudo cp $installed_dir/assets/mimeapps.list /etc/skel/.config/mimeapps.list
 
 echo
 echo "Setting bashrc"

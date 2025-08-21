@@ -12,6 +12,8 @@
 #tput setaf 8 = light blue
 ##################################################################################################################
 
+installed_dir=$(dirname $(readlink -f $(basename `pwd`)))
+
 echo
 tput setaf 2
 echo "########################################################################"
@@ -23,24 +25,8 @@ sudo pacman -S --noconfirm --needed edu-rofi-git
 sudo pacman -S --noconfirm --needed edu-rofi-themes-git
 
 # All the software below will be installed on all desktops
-sudo pacman -S --noconfirm --needed archlinux-tools
-sudo pacman -S --noconfirm --needed dconf-editor
-sudo pacman -S --noconfirm --needed devtools
-sudo pacman -S --noconfirm --needed hardinfo2
-sudo pacman -S --noconfirm --needed hw-probe
-sudo pacman -S --noconfirm --needed logrotate
-sudo pacman -S --noconfirm --needed lsb-release
-sudo pacman -S --noconfirm --needed powertop
-sudo pacman -S --noconfirm --needed inxi
-sudo pacman -S --noconfirm --needed acpi
-sudo pacman -S --noconfirm --needed plocate
-sudo pacman -S --noconfirm --needed most
-sudo pacman -S --noconfirm --needed namcap
-sudo pacman -S --noconfirm --needed nomacs
-sudo pacman -S --noconfirm --needed nm-connection-editor
-sudo pacman -S --noconfirm --needed python-pylint
-sudo pacman -S --noconfirm --needed python-pywal
-
+sudo pacman -S --noconfirm --needed archlinux-tools dconf-editor devtools hardinfo2 hw-probe logrotate lsb-release powertop inxi acpi plocate most namcap nm-connection-editor python-pylint python-pywal
+#sudo pacman -S --noconfirm --needed nomacs
 
 tput setaf 6
 echo "##############################################################"

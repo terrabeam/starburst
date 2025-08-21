@@ -23,7 +23,7 @@ tput sgr0
 echo
 
 # All the software below will be installed on all desktops
-sudo apt install -y dconf-editor build-essential hardinfo hw-probe logrotate lsb-release powertop inxi acpi plocate most network-manager-gnome python3-pylint python3-pywal
+sudo apt install -y dconf-editor build-essential hardinfo hw-probe logrotate lsb-release powertop inxi acpi plocate most network-manager-gnome python3-pylint python3-pywal module-assistent
 
 tput setaf 6
 echo "##############################################################"

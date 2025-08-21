@@ -31,10 +31,14 @@ tput sgr0
 echo
 
 #firmwares
-sudo apt-get install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree
+sudo apt-get install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree dkms linux-headers-$(uname -r)
+
+read -n1 -r -p "Press any key to continue..." key
 
 #fonts
 sudo apt install -y font-manager adobe-source-sans-fonts noto-fonts ttf-bitstream-vera ttf-dejavu ttf-droid ttf-hack ttf-inconsolata ttf-liberation ttf-roboto ttf-roboto-mono ttf-ubuntu-font-family terminus-font awesome-terminal-fonts ttf-jetbrains-mono-nerd
+
+read -n1 -r -p "Press any key to continue..." key
 
 #tools
 sudo apt install -y wget curl nano fastfetch lolcat bash-completion starship alacritty hwinfo lshw reflector expac betterlockscreen pamac-aur avahi
@@ -43,23 +47,35 @@ if [ ! -f /usr/bin/duf ]; then
 fi
 sudo apt install -y man-db man-pages thunar thunar-archive-plugin thunar-volman tree xdg-user-dirs polkit-gnome rate-mirrors rsync time bat ntp nss-mdns
 
+read -n1 -r -p "Press any key to continue..." key
+
 #disk-tools
 sudo apt install -y gvfs-smb squashfs-tools
+
+read -n1 -r -p "Press any key to continue..." key
 
 #archive-managers
 sudo apt install -y zip gzip p7zip unace unrar unzip file-roller
 
+read -n1 -r -p "Press any key to continue..." key
+
 #theming
 sudo apt install -y bibata-cursor-theme-bin feh
+
+read -n1 -r -p "Press any key to continue..." key
 
 #enable services
 sudo systemctl enable avahi-daemon.service
 sudo systemctl enable ntpd.service
 
+read -n1 -r -p "Press any key to continue..." key
+
 #Run service that will discard unused blocks on mounted filesystems. This is useful for solid-state drives (SSDs) and thinly-provisioned storage. 
 echo
 echo "Enable fstrim timer"
 sudo systemctl enable fstrim.timer
+
+read -n1 -r -p "Press any key to continue..." key
 
 echo
 echo "################################################################"
@@ -69,6 +85,7 @@ echo
 sudo cp /etc/nsswitch.conf /etc/nsswitch.conf.bak
 sudo wget https://raw.githubusercontent.com/yurikuit/nemesis/refs/heads/main/Personal/settings/nsswitch/nsswitch.conf -O $workdir/etc/nsswitch.conf
 
+read -n1 -r -p "Press any key to continue..." key
 
 echo
 tput setaf 3

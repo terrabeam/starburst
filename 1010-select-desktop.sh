@@ -137,7 +137,6 @@ if [ -f /tmp/install-xfce4-full-arch ]; then
     sh 1110-arch-xfce*
     sh 1120_arch-xfce*
     sh 1130-arch-xfce*
-fi
 elif [ -f /tmp/install-xfce4-full-debian ]; then
     sh 1020-debian*
     sh 1030-debian*
@@ -155,7 +154,6 @@ if [ -f /tmp/install-xfce4-workstation-arch ]; then
     sh 1120_arch-xfce*
     sh 1130-arch-xfce*
     sh 1140-arch-xfce*
-fi
 elif [ -f /tmp/install-xfce4-workstation-debian ]; then
     sh 1020-debian-*
     sh 1030-debian-*
@@ -168,7 +166,6 @@ fi
 
 if [ -f /tmp/install-plasma-minimal-arch ]; then
     sh 1110-arch-plasma-minimal*
-fi
 elif [ -f /tmp/install-plasma-minimal-debian ]; then
     sh 1110-debian-plasma-minimal*
 fi
@@ -176,7 +173,6 @@ fi
 if [ -f /tmp/install-plasma-full-arch ]; then
     sh 1110-arch-plasma-minimal*
     sh 1110-arch-plasma-full*
-fi
 elif [ -f /tmp/install-plasma-full-debian ]; then
     sh 1110-debian-plasma-minimal*
     sh 1110-debian-plasma-full*
@@ -185,14 +181,12 @@ fi
 # installation of Tiling Window Managers
 if [ -f /tmp/install-chadwm-arch ]; then
     sh 1200-arch-chadwm*
-fi
 elif [ -f /tmp/install-chadwm-debian ]; then
     sh 1200-debian-chadwm*
 fi
 
 if [ -f /tmp/install-hyprland-arch ]; then
     sh 1120-arch-hyprland*
-fi
 elif [ -f /tmp/install-hyprland-debian ]; then
     sh 1200-debian-hyprland*
 fi

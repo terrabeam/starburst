@@ -31,7 +31,7 @@ tput sgr0
 echo
 
 #firmwares
-sudo apt-get install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree dkms linux-headers-$(uname -r)
+sudo apt-get install -y dkms linux-headers-$(uname -r)
 
 read -n1 -r -p "Press any key to continue..." key
 

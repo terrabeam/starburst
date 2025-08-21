@@ -1,5 +1,10 @@
 #!/bin/bash
-set -euo pipefail
+
+if [ "$DISTRO" = "arch" ]; then
+    set -euo pipefail
+else
+    set -e
+fi
 
 #################################################################
 # Colors

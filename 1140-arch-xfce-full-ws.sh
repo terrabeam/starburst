@@ -46,3 +46,8 @@ sudo pacman -S --noconfirm --needed fish zsh zsh-completions zsh-syntax-highligh
 #tools
 #sudo pacman -S --noconfirm --needed gitahead-git
 sudo pacman -S --noconfirm --needed wttr system-config-printer
+sudo pacman -S --noconfirm --needed ripgrep meld btop htop hwinfo lshw reflector expac sublime-text-4
+if [ ! -f /usr/bin/duf ]; then
+  sudo pacman -S --noconfirm --needed duf
+fi
+sudo pacman -S --noconfirm --needed man-db man-pages pacmanlogviewer paru-git yay-git thunar thunar-archive-plugin thunar-volman tree xdg-user-dirs polkit-gnome rate-mirrors rsync time bat ntp nss-mdns

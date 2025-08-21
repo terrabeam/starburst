@@ -31,28 +31,26 @@ tput sgr0
 echo
 
 #firmwares
-sudo pacman -S --noconfirm --needed aic94xx-firmware linux-firmware-qlogic upd72020x-fw wd719x-firmware mkinitcpio-firmware
+sudo apt-get install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree
 
 #fonts
-sudo pacman -S --noconfirm --needed font-manager adobe-source-sans-fonts noto-fonts ttf-bitstream-vera ttf-dejavu ttf-droid ttf-hack ttf-inconsolata ttf-liberation ttf-roboto ttf-roboto-mono ttf-ubuntu-font-family terminus-font awesome-terminal-fonts ttf-jetbrains-mono-nerd
+sudo apt install -y font-manager adobe-source-sans-fonts noto-fonts ttf-bitstream-vera ttf-dejavu ttf-droid ttf-hack ttf-inconsolata ttf-liberation ttf-roboto ttf-roboto-mono ttf-ubuntu-font-family terminus-font awesome-terminal-fonts ttf-jetbrains-mono-nerd
 
 #tools
-sudo pacman -S --noconfirm --needed wget curl nano fastfetch lolcat bash-completion starship alacritty hwinfo lshw reflector expac betterlockscreen pamac-aur avahi
+sudo apt install -y wget curl nano fastfetch lolcat bash-completion starship alacritty hwinfo lshw reflector expac betterlockscreen pamac-aur avahi
 if [ ! -f /usr/bin/duf ]; then
-  sudo pacman -S --noconfirm --needed duf
+  sudo apt install -y duf
 fi
-sudo pacman -S --noconfirm --needed man-db man-pages pacmanlogviewer paru-git yay-git thunar thunar-archive-plugin thunar-volman tree xdg-user-dirs polkit-gnome rate-mirrors rsync time bat ntp nss-mdns
+sudo apt install -y man-db man-pages thunar thunar-archive-plugin thunar-volman tree xdg-user-dirs polkit-gnome rate-mirrors rsync time bat ntp nss-mdns
 
 #disk-tools
-sudo pacman -S --noconfirm --needed baobab gvfs-smb hddtemp squashfs-tools
-#sudo pacman -S --noconfirm --needed gvfs-dnssd the_silver_searcher gnome-disk-utility
+sudo apt install -y gvfs-smb squashfs-tools
 
 #archive-managers
-sudo pacman -S --noconfirm --needed zip gzip p7zip unace unrar unzip file-roller
+sudo apt install -y zip gzip p7zip unace unrar unzip file-roller
 
 #theming
-sudo pacman -S --noconfirm --needed bibata-cursor-theme-bin feh
-#sudo pacman -S --noconfirm --needed breeze-icons sardi-flat-colora-variations-icons-git
+sudo apt install -y bibata-cursor-theme-bin feh
 
 #enable services
 sudo systemctl enable avahi-daemon.service
@@ -85,12 +83,12 @@ virt_type=$(systemd-detect-virt)
 case "$virt_type" in
     kvm)
         echo "Detected KVM. Installing qemu-guest-agent..."
-        sudo pacman -S --noconfirm --needed qemu-guest-agent spice-vdagent
+        sudo apt install -y qemu-guest-agent spice-vdagent
         sudo systemctl enable qemu-guest-agent.service
         ;;
     oracle)
         echo "Detected VirtualBox. Installing virtualbox-guest-utils..."
-        sudo pacman -S --noconfirm --needed virtualbox-guest-utils
+        sudo apt install -y virtualbox-guest-utils
         sudo systemctl enable vboxservice.service
         ;;
     none)

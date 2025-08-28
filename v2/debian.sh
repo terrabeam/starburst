@@ -50,6 +50,19 @@ echo "Updated sources.list to include contrib/non-free where needed."
 tput_reset
 
 ##########################
+# 1a. Check for archive.debian.org and update to deb.debian.org
+##########################
+if grep -q "archive.debian.org" /etc/apt/sources.list; then
+    tput_yellow
+    echo "Found archive.debian.org in sources.list, updating to deb.debian.org..."
+    tput_reset
+    sudo sed -i -r 's|archive\.debian\.org|deb.debian.org|g' /etc/apt/sources.list
+    tput_green
+    echo "Updated sources.list to use deb.debian.org."
+    tput_reset
+fi
+
+##########################
 # 2. Full update and upgrade
 ##########################
 tput_yellow

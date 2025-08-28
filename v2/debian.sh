@@ -38,10 +38,10 @@ echo "DE: $DE, TWM: $TWM, Install Level: $INSTALL_LEVEL"
 echo "Checking /etc/apt/sources.list for contrib/non-free..."
 
 # Backup sources.list first
-cp /etc/apt/sources.list /etc/apt/sources.list.bak.$(date +%s)
+sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak.$(date +%s)
 
 # Add contrib and non-free if missing
-sed -i -r 's/^(deb\s+\S+\s+\S+)\s+(main)$/\1 main contrib non-free/' /etc/apt/sources.list
+sudo sed -i -r 's/^(deb\s+\S+\s+\S+)\s+(main)$/\1 main contrib non-free/' /etc/apt/sources.list
 
 echo "Updated sources.list to include contrib/non-free where needed."
 
@@ -49,14 +49,14 @@ echo "Updated sources.list to include contrib/non-free where needed."
 # 2. Full update and upgrade
 ##########################
 echo "Updating package lists..."
-apt update
+sudo apt update
 
 echo "Upgrading installed packages..."
-apt -y full-upgrade
+sudo apt -y full-upgrade
 
 echo "System updated. Rebooting now to continue..."
-touch /root/.debian_upgrade_continue
-reboot
+sudo touch /root/.debian_upgrade_continue
+sudo reboot
 
 ##########################
 # 3. Multi-stage major version upgrade
@@ -83,19 +83,19 @@ while [[ $CURRENT_DEBIAN_VERSION -lt $LATEST_DEBIAN_VERSION ]]; do
             esac
 
             if [[ -n "$CODENAME" ]]; then
-                sed -i -r "s/debian[0-9]*/$CODENAME/g" /etc/apt/sources.list
+                sudo sed -i -r "s/debian[0-9]*/$CODENAME/g" /etc/apt/sources.list
             else
                 # fallback: replace major version number
-                sed -i -r "s/debian[0-9]*/debian$NEXT_VERSION/g" /etc/apt/sources.list
+                sudo sed -i -r "s/debian[0-9]*/debian$NEXT_VERSION/g" /etc/apt/sources.list
             fi
 
             # Update and full-upgrade
-            apt update
-            apt -y full-upgrade
+            sudo apt update
+            sudo apt -y full-upgrade
 
             echo "Upgrade to Debian $NEXT_VERSION complete. Rebooting..."
-            touch /root/.debian_upgrade_continue
-            reboot
+            sudo touch /root/.debian_upgrade_continue
+            sudo reboot
             ;;
         *)
             echo "Skipping upgrade to $NEXT_VERSION. Continuing with current version."
@@ -119,18 +119,18 @@ echo "Continuing with Desktop Environment and Tiling WM installation..."
 case "$DE" in
     xfce)
         echo "Installing XFCE..."
-        apt -y install task-xfce-desktop
+        #apt -y install task-xfce-desktop
         ;;
     plasma)
         echo "Installing KDE Plasma..."
-        apt -y install task-kde-desktop
+        #apt -y install task-kde-desktop
         ;;
     gnome)
         echo "Installing GNOME..."
-        apt -y install task-gnome-desktop
+        #apt -y install task-gnome-desktop
         ;;
     none)
-        echo "No desktop environment selected."
+        #echo "No desktop environment selected."
         ;;
 esac
 

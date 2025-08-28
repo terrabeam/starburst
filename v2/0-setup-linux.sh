@@ -27,8 +27,9 @@ echo
 ##########################
 source /etc/os-release
 
-OS_ID=${ID,,}
-OS_LIKE=${ID_LIKE,,}
+OS_ID="${ID,,}"
+OS_LIKE="${ID_LIKE:-}"
+OS_LIKE="${OS_LIKE,,}"
 OS_VERSION="$VERSION_ID"
 OS_PRETTY="$PRETTY_NAME"
 OS=""
@@ -63,7 +64,7 @@ else
     tput_red
     echo "################################################################################"
     echo "ERROR: Unsupported or unknown Linux distribution."
-    echo "Detected: ID=$OS_ID, ID_LIKE=$OS_LIKE"
+    echo "Detected: ID=$OS_ID, ID_LIKE=${OS_LIKE:-empty}"
     echo "################################################################################"
     tput_reset
     exit 1

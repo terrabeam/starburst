@@ -229,19 +229,19 @@ case "$DE" in
         tput_yellow
         echo "Installing XFCE..."
         tput_reset
-        sudo apt -y install task-xfce-desktop
+        #sudo apt -y install task-xfce-desktop
         ;;
     plasma)
         tput_yellow
         echo "Installing KDE Plasma..."
         tput_reset
-        sudo apt -y install task-kde-desktop
+        #sudo apt -y install task-kde-desktop
         ;;
     gnome)
         tput_yellow
         echo "Installing GNOME..."
         tput_reset
-        sudo apt -y install task-gnome-desktop
+        #sudo apt -y install task-gnome-desktop
         ;;
     none)
         tput_gray

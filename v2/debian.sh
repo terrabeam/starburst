@@ -94,7 +94,7 @@ fi
 # 3. Stepwise major version upgrade
 ##########################
 DEBIAN_SEQUENCE=(buster bullseye bookworm trixie forky)
-CURRENT_CODENAME=$(grep -Po 'deb\s+\S+\s+\K\S+' /etc/apt/sources.list | grep -E '^(buster|bullseye|bookworm|trixie|forky)$' | head -n1)
+CURRENT_CODENAME=$(grep -Po 'deb\s+\S+\s+\K\S+' /etc/apt/sources.list | grep -E '^(buster|bullseye|bookworm|trixie)$' | head -n1)
 LATEST_CODENAME=${DEBIAN_SEQUENCE[-1]}
 
 tput_cyan

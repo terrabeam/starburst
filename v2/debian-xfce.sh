@@ -81,3 +81,34 @@ else
     fi
 fi
 
+#cleanup unwanted packages
+    # Packages to remove
+    packages=("vim" "vim-runtime" "vim-common" "vim-tiny")  
+
+    # Function to check if a package is installed
+    is_package_installed() {
+        dpkg -s "$1" &> /dev/null
+    }
+
+    # Iterate over each package
+    for package in "${packages[@]}"; do
+        if is_package_installed "$package"; then
+            echo "Removing $package..."
+            sudo apt-get purge -y "$package"
+        else
+            echo "$package is not installed, skipping."
+        fi
+
+        # Optional double-check
+        if ! is_package_installed "$package"; then
+            echo "$package successfully removed."
+        else
+            echo "$package is still installed. Check manually."
+        fi
+
+        echo "----------------------------"
+    done
+
+    # Remove leftover dependencies
+    sudo apt-get autoremove -y
+

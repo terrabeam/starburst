@@ -9,7 +9,7 @@ tput_black() { tput setaf 0; }
 tput_red() { tput setaf 1; }
 tput_green() { tput setaf 2; }
 tput_yellow() { tput setaf 3; }
-tput_blue() { tput setaf 4; }
+tput_cyan() { tput setaf 4; }
 tput_purple() { tput setaf 5; }
 tput_cyan() { tput setaf 6; }
 tput_gray() { tput setaf 7; }
@@ -231,6 +231,7 @@ tput_reset
 case "$DE" in
     xfce|plasma|gnome)
         tput_yellow
+        echo
         echo "Preparing to install $DE..."
         tput_reset
 
@@ -238,11 +239,13 @@ case "$DE" in
         SCRIPT_NAME="${OS}-${DE}.sh"
         if [[ -f "$SCRIPT_NAME" ]]; then
             tput_cyan
+            echo
             echo "Running $SCRIPT_NAME..."
             tput_reset
             bash "$SCRIPT_NAME"
         else
             tput_red
+            echo
             echo "Error: $SCRIPT_NAME not found!"
             tput_reset
             exit 1
@@ -250,6 +253,7 @@ case "$DE" in
         ;;
     none)
         tput_gray
+        echo
         echo "No Desktop Environment selected, skipping DE installation."
         tput_reset
         ;;
@@ -261,18 +265,21 @@ esac
 case "$TWM" in
     chadwm)
         tput_yellow
+        echo
         echo "Installing CHADWM..."
         tput_reset
         # add CHADWM install commands here
         ;;
     hyprland)
         tput_yellow
+        echo
         echo "Installing Hyprland..."
         tput_reset
         # add Hyprland install commands here
         ;;
     none)
         tput_gray
+        echo
         echo "No tiling window manager selected."
         tput_reset
         ;;
@@ -283,22 +290,26 @@ esac
 ##########################
 case "$INSTALL_LEVEL" in
     minimal)
-        tput_blue
+        tput_cyan
+        echo
         echo "Minimal installation selected."
         tput_reset
         ;;
     full)
-        tput_blue
+        tput_cyan
+        echo
         echo "Full installation selected."
         tput_reset
         ;;
     workstation)
-        tput_blue
+        tput_cyan
+        echo
         echo "Workstation installation selected."
         tput_reset
         ;;
     server)
-        tput_blue
+        tput_cyan
+        echo
         echo "Server installation selected."
         tput_reset
         ;;

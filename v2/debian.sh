@@ -82,37 +82,39 @@ LATEST_VERSION=$(curl -s "http://ftp.debian.org/debian/dists/$LATEST_CODENAME/Re
 
 echo "Latest Debian stable: $LATEST_CODENAME ($LATEST_VERSION)"
 
-while [[ $CURRENT_DEBIAN_VERSION -lt $LATEST_VERSION ]]; do
-    NEXT_VERSION=$((CURRENT_DEBIAN_VERSION+1))
-    echo
-    echo "Detected Debian $CURRENT_DEBIAN_VERSION, next major version available: $NEXT_VERSION ($LATEST_CODENAME)."
-    read -rp "Do you want to upgrade to Debian $NEXT_VERSION? [y/N]: " choice
-    case "${choice,,}" in
-        y|yes)
-            echo "Preparing to upgrade from Debian $CURRENT_DEBIAN_VERSION to $NEXT_VERSION..."
-            sudo sed -i -r "s/debian[0-9]*/$LATEST_CODENAME/g" /etc/apt/sources.list
-            sudo apt update
-            sudo apt -y full-upgrade
-            echo
-            echo "Upgrade to Debian $NEXT_VERSION complete. A reboot is recommended before continuing."
-            read -rp "Please reboot your system and restart this script to continue. Press Enter to exit..." _
-            exit 0
-            ;;
-        *)
-            echo "Skipping upgrade to $NEXT_VERSION. Continuing with current version."
-            break
-            ;;
-    esac
-    CURRENT_DEBIAN_VERSION=$(cut -d. -f1 /etc/debian_version)
-done
+# Only run upgrade loop if needed
+if [[ $CURRENT_DEBIAN_VERSION -lt $LATEST_VERSION ]]; then
+    while [[ $CURRENT_DEBIAN_VERSION -lt $LATEST_VERSION ]]; do
+        NEXT_VERSION=$((CURRENT_DEBIAN_VERSION+1))
+        echo
+        echo "Detected Debian $CURRENT_DEBIAN_VERSION, next major version available: $NEXT_VERSION ($LATEST_CODENAME)."
+        read -rp "Do you want to upgrade to Debian $NEXT_VERSION? [y/N]: " choice
+        case "${choice,,}" in
+            y|yes)
+                echo "Preparing to upgrade from Debian $CURRENT_DEBIAN_VERSION to $NEXT_VERSION..."
+                sudo sed -i -r "s/debian[0-9]*/$LATEST_CODENAME/g" /etc/apt/sources.list
+                sudo apt update
+                sudo apt -y full-upgrade
+                echo
+                echo "Upgrade to Debian $NEXT_VERSION complete. A reboot is recommended before continuing."
+                read -rp "Please reboot your system and restart this script to continue. Press Enter to exit..." _
+                exit 0
+                ;;
+            *)
+                echo "Skipping upgrade to $NEXT_VERSION. Continuing with current version."
+                break
+                ;;
+        esac
+        CURRENT_DEBIAN_VERSION=$(cut -d. -f1 /etc/debian_version)
+    done
+fi
 
 echo "Debian is now at version $CURRENT_DEBIAN_VERSION."
-
-##########################
-# 4. Continue with DE/TWM/install level setup
-##########################
 echo "Continuing with Desktop Environment and Tiling WM installation..."
 
+##########################
+# 4. Desktop Environment installation
+##########################
 case "$DE" in
     xfce)
         echo "Installing XFCE..."
@@ -131,20 +133,26 @@ case "$DE" in
         ;;
 esac
 
+##########################
+# 5. Tiling Window Manager installation
+##########################
 case "$TWM" in
     chadwm)
         echo "Installing CHADWM..."
-        # add CHADWM install commands here (use sudo if needed)
+        # add CHADWM install commands here with sudo if needed
         ;;
     hyprland)
         echo "Installing Hyprland..."
-        # add Hyprland install commands here (use sudo if needed)
+        # add Hyprland install commands here with sudo if needed
         ;;
     none)
         echo "No tiling window manager selected."
         ;;
 esac
 
+##########################
+# 6. Installation level handling
+##########################
 case "$INSTALL_LEVEL" in
     minimal)
         echo "Minimal installation selected."

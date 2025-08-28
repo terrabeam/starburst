@@ -35,6 +35,7 @@ echo "DE: $DE, TWM: $TWM, Install Level: $INSTALL_LEVEL"
 ##########################
 if ! command -v curl >/dev/null 2>&1; then
     tput_yellow
+    echo
     echo "curl is not installed. Installing..."
     tput_reset
     sudo apt update
@@ -45,11 +46,13 @@ fi
 # 1. Add contrib and non-free if missing
 ##########################
 tput_yellow
+echo
 echo "Checking /etc/apt/sources.list for contrib/non-free..."
 tput_reset
 sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak.$(date +%s)
 sudo sed -i -r 's/^(deb\s+\S+\s+\S+)\s+(main)$/\1 main contrib non-free/' /etc/apt/sources.list
 tput_green
+echo
 echo "Updated sources.list to include contrib/non-free where needed."
 tput_reset
 
@@ -73,10 +76,12 @@ BULLSEYE_INDEX=$(codename_index "bullseye")
 
 if [[ "$CURRENT_INDEX" -ge "$BULLSEYE_INDEX" ]] && grep -q "archive.debian.org" /etc/apt/sources.list; then
     tput_yellow
+    echo
     echo "Found archive.debian.org in sources.list and system is Bullseye or newer, updating to deb.debian.org..."
     tput_reset
     sudo sed -i -r 's|archive\.debian\.org|deb.debian.org|g' /etc/apt/sources.list
     tput_green
+    echo
     echo "Updated sources.list to use deb.debian.org."
     tput_reset
 fi
@@ -85,6 +90,7 @@ fi
 # 2. Full update and upgrade
 ##########################
 tput_yellow
+echo
 echo "Updating package lists..."
 tput_reset
 sudo apt update
@@ -93,12 +99,14 @@ sudo apt update
 AUTOREMOVE_PENDING=$(apt -s autoremove | grep -E 'Remv' || true)
 if [[ -n "$AUTOREMOVE_PENDING" ]]; then
     tput_yellow
+    echo
     echo "Removing packages that are no longer required before upgrade..."
     tput_reset
     sudo apt -y autoremove
 fi
 
 tput_yellow
+echo
 echo "Upgrading installed packages..."
 tput_reset
 sudo apt -y full-upgrade
@@ -107,6 +115,7 @@ sudo apt -y full-upgrade
 AUTOREMOVE_PENDING=$(apt -s autoremove | grep -E 'Remv' || true)
 if [[ -n "$AUTOREMOVE_PENDING" ]]; then
     tput_yellow
+    echo
     echo "Removing packages that are no longer required after upgrade..."
     tput_reset
     sudo apt -y autoremove
@@ -122,12 +131,14 @@ if [[ -n "$UPGRADE_PENDING" ]]; then
     case "${reboot_choice,,}" in
         y|yes)
             tput_red
+            echo
             echo "Rebooting now. After reboot, please restart this script to continue..."
             tput_reset
             sudo reboot
             ;;
         *)
             tput_yellow
+            echo
             echo "Skipping reboot. Make sure to reboot manually before continuing upgrades."
             tput_reset
             exit 0
@@ -135,6 +146,7 @@ if [[ -n "$UPGRADE_PENDING" ]]; then
     esac
 else
     tput_green
+    echo
     echo "All packages are up to date. Continuing to Debian major version check..."
     tput_reset
 fi
@@ -147,6 +159,7 @@ CURRENT_CODENAME=$(grep -Po 'deb\s+\S+\s+\K\S+' /etc/apt/sources.list | grep -E 
 LATEST_CODENAME=${DEBIAN_SEQUENCE[-1]}
 
 tput_cyan
+echo
 echo "Current codename: $CURRENT_CODENAME"
 echo "Latest stable codename: $LATEST_CODENAME"
 tput_reset
@@ -162,6 +175,7 @@ while [[ "$CURRENT_CODENAME" != "$LATEST_CODENAME" ]]; do
 
     if [[ -z "$NEXT_CODENAME" ]]; then
         tput_red
+        echo
         echo "Error: Cannot determine next codename after $CURRENT_CODENAME"
         tput_reset
         exit 1
@@ -175,11 +189,13 @@ while [[ "$CURRENT_CODENAME" != "$LATEST_CODENAME" ]]; do
     case "${choice,,}" in
         y|yes)
             tput_yellow
+            echo
             echo "Updating sources.list to $NEXT_CODENAME..."
             tput_reset
             sudo sed -i -r "s/\b$CURRENT_CODENAME\b/$NEXT_CODENAME/g" /etc/apt/sources.list
 
             tput_yellow
+            echo
             echo "Updating packages..."
             tput_reset
             sudo apt update
@@ -188,6 +204,7 @@ while [[ "$CURRENT_CODENAME" != "$LATEST_CODENAME" ]]; do
             AUTOREMOVE_PENDING=$(apt -s autoremove | grep -E 'Remv' || true)
             if [[ -n "$AUTOREMOVE_PENDING" ]]; then
                 tput_yellow
+                echo
                 echo "Removing packages that are no longer required before upgrade..."
                 tput_reset
                 sudo apt -y autoremove
@@ -199,12 +216,14 @@ while [[ "$CURRENT_CODENAME" != "$LATEST_CODENAME" ]]; do
             AUTOREMOVE_PENDING=$(apt -s autoremove | grep -E 'Remv' || true)
             if [[ -n "$AUTOREMOVE_PENDING" ]]; then
                 tput_yellow
+                echo
                 echo "Removing packages that are no longer required after upgrade..."
                 tput_reset
                 sudo apt -y autoremove
             fi
 
             tput_green
+            echo
             echo "Upgrade to $NEXT_CODENAME complete. A reboot is recommended."
             tput_reset
             read -rp "Press Enter to reboot..." _
@@ -212,6 +231,7 @@ while [[ "$CURRENT_CODENAME" != "$LATEST_CODENAME" ]]; do
             ;;
         *)
             tput_yellow
+            echo
             echo "Skipping upgrade to $NEXT_CODENAME. Continuing with current version."
             tput_reset
             break
@@ -222,6 +242,7 @@ while [[ "$CURRENT_CODENAME" != "$LATEST_CODENAME" ]]; do
 done
 
 tput_green
+echo
 echo "Debian is now at codename $CURRENT_CODENAME. Continuing with DE/TWM installation..."
 tput_reset
 
@@ -316,5 +337,6 @@ case "$INSTALL_LEVEL" in
 esac
 
 tput_green
+echo
 echo "Debian setup complete."
 tput_reset

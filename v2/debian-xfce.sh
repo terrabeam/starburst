@@ -18,6 +18,7 @@ tput_gray() { tput setaf 7; }
 # Use exported variables from main detection script
 ##########################
 OS="${DETECTED_OS}"
+DDE="${DETECTED_DE}"
 DE="${SELECTED_DE:-none}"
 TWM="${SELECTED_TWM:-none}"
 INSTALL_LEVEL="${INSTALL_LEVEL:-minimal}"
@@ -32,7 +33,7 @@ case "$DE" in
         tput_reset
         
         #sudo apt -y install task-xfce-desktop
-        if [[ "$CURRENT_DE" == "NONE" ]]; then
+        if [[ -z "$DDE" ]]; then
             tput_cyan
             echo "No Desktop Environment detected. Installing XFCE (light setup with SDDM)..."
             tput_reset
@@ -49,7 +50,7 @@ case "$DE" in
             tput_reset
         else
             tput_cyan
-            echo "You already have $CURRENT_DE installed."
+            echo "You already have $DE installed."
             tput_reset
 
             # Check if LightDM is installed and active
@@ -76,74 +77,4 @@ case "$DE" in
             fi
         fi
         ;;
-    plasma)
-        tput_yellow
-        echo "Installing KDE Plasma..."
-        tput_reset
-        #sudo apt -y install task-kde-desktop
-        ;;
-    gnome)
-        tput_yellow
-        echo "Installing GNOME..."
-        tput_reset
-        #sudo apt -y install task-gnome-desktop
-        ;;
-    none)
-        tput_gray
-        echo "No desktop environment selected."
-        tput_reset
-        ;;
 esac
-
-##########################
-# 5. Tiling Window Manager installation
-##########################
-case "$TWM" in
-    chadwm)
-        tput_yellow
-        echo "Installing CHADWM..."
-        tput_reset
-        # add CHADWM install commands here
-        ;;
-    hyprland)
-        tput_yellow
-        echo "Installing Hyprland..."
-        tput_reset
-        # add Hyprland install commands here
-        ;;
-    none)
-        tput_gray
-        echo "No tiling window manager selected."
-        tput_reset
-        ;;
-esac
-
-##########################
-# 6. Installation level handling
-##########################
-case "$INSTALL_LEVEL" in
-    minimal)
-        tput_blue
-        echo "Minimal installation selected."
-        tput_reset
-        ;;
-    full)
-        tput_blue
-        echo "Full installation selected."
-        tput_reset
-        ;;
-    workstation)
-        tput_blue
-        echo "Workstation installation selected."
-        tput_reset
-        ;;
-    server)
-        tput_blue
-        echo "Server installation selected."
-        tput_reset
-        ;;
-esac
-
-tput_green
-echo "Debian setup complete."
-tput_reset

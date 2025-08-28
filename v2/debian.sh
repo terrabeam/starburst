@@ -18,13 +18,16 @@ tput_gray() { tput setaf 7; }
 # Use exported variables from main detection script
 ##########################
 OS="${DETECTED_OS}"
+DDE="${DETECTED_DE}"
 DE="${SELECTED_DE:-none}"
 TWM="${SELECTED_TWM:-none}"
 INSTALL_LEVEL="${INSTALL_LEVEL:-minimal}"
 
 tput_cyan
+echo
 echo "Starting Debian setup..."
 tput_reset
+echo
 echo "DE: $DE, TWM: $TWM, Install Level: $INSTALL_LEVEL"
 
 ##########################
@@ -226,71 +229,28 @@ tput_reset
 # 4. Desktop Environment installation
 ##########################
 case "$DE" in
-    xfce)
+    xfce|plasma|gnome)
         tput_yellow
-        echo "Installing XFCE..."
+        echo "Preparing to install $DE..."
         tput_reset
-        
-        #sudo apt -y install task-xfce-desktop
-        if [[ "$CURRENT_DE" == "NONE" ]]; then
+
+        # Run DE-specific script dynamically
+        SCRIPT_NAME="${OS}-${DE}.sh"
+        if [[ -f "$SCRIPT_NAME" ]]; then
             tput_cyan
-            echo "No Desktop Environment detected. Installing XFCE (light setup with SDDM)..."
+            echo "Running $SCRIPT_NAME..."
             tput_reset
-
-            sudo apt update
-            sudo apt install -y xfce4 xfce4-goodies sddm
-
-            # Enable SDDM as the display manager
-            sudo systemctl enable sddm
-
-            tput_green
-            echo "XFCE with SDDM installed successfully."
-            echo "You can reboot now to start XFCE."
-            tput_reset
+            bash "$SCRIPT_NAME"
         else
-            tput_cyan
-            echo "You already have $CURRENT_DE installed."
+            tput_red
+            echo "Error: $SCRIPT_NAME not found!"
             tput_reset
-
-            # Check if LightDM is installed and active
-            if systemctl is-active --quiet lightdm; then
-                tput_yellow
-                echo "LightDM is currently active. Replacing with SDDM..."
-                tput_reset
-
-                # Disable and remove LightDM
-                sudo systemctl disable lightdm
-                sudo apt purge -y lightdm lightdm-gtk-greeter
-
-                # Install and enable SDDM
-                sudo apt install -y sddm
-                sudo systemctl enable sddm
-
-                tput_green
-                echo "LightDM removed and replaced with SDDM."
-                tput_reset
-            else
-                tput_cyan
-                echo "No LightDM detected, leaving current display manager unchanged."
-                tput_reset
-            fi
+            exit 1
         fi
-        ;;
-    plasma)
-        tput_yellow
-        echo "Installing KDE Plasma..."
-        tput_reset
-        #sudo apt -y install task-kde-desktop
-        ;;
-    gnome)
-        tput_yellow
-        echo "Installing GNOME..."
-        tput_reset
-        #sudo apt -y install task-gnome-desktop
         ;;
     none)
         tput_gray
-        echo "No desktop environment selected."
+        echo "No Desktop Environment selected, skipping DE installation."
         tput_reset
         ;;
 esac

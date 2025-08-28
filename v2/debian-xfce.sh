@@ -84,7 +84,8 @@ fi
 #cleanup unwanted packages
     # Packages to remove
     packages=("vim" "vim-runtime" "vim-common" "vim-tiny" "mousepad" "parole" "xfburn" "xfce4-screenshooter" "xfce4-notes")  
-
+    sudo apt-mark manual xfce4-goodies
+    
     # Function to check if a package is installed
     is_package_installed() {
         dpkg -s "$1" &> /dev/null

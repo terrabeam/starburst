@@ -17,6 +17,7 @@ tput_gray() { tput setaf 7; }
 ##########################
 # Use exported variables from main detection script
 ##########################
+OS="${DETECTED_OS}"
 DE="${SELECTED_DE:-none}"
 TWM="${SELECTED_TWM:-none}"
 INSTALL_LEVEL="${INSTALL_LEVEL:-minimal}"
@@ -229,7 +230,51 @@ case "$DE" in
         tput_yellow
         echo "Installing XFCE..."
         tput_reset
+        
         #sudo apt -y install task-xfce-desktop
+        if [[ "$CURRENT_DE" == "NONE" ]]; then
+            tput_cyan
+            echo "No Desktop Environment detected. Installing XFCE (light setup with SDDM)..."
+            tput_reset
+
+            sudo apt update
+            sudo apt install -y xfce4 xfce4-goodies sddm
+
+            # Enable SDDM as the display manager
+            sudo systemctl enable sddm
+
+            tput_green
+            echo "XFCE with SDDM installed successfully."
+            echo "You can reboot now to start XFCE."
+            tput_reset
+        else
+            tput_cyan
+            echo "You already have $CURRENT_DE installed."
+            tput_reset
+
+            # Check if LightDM is installed and active
+            if systemctl is-active --quiet lightdm; then
+                tput_yellow
+                echo "LightDM is currently active. Replacing with SDDM..."
+                tput_reset
+
+                # Disable and remove LightDM
+                sudo systemctl disable lightdm
+                sudo apt purge -y lightdm lightdm-gtk-greeter
+
+                # Install and enable SDDM
+                sudo apt install -y sddm
+                sudo systemctl enable sddm
+
+                tput_green
+                echo "LightDM removed and replaced with SDDM."
+                tput_reset
+            else
+                tput_cyan
+                echo "No LightDM detected, leaving current display manager unchanged."
+                tput_reset
+            fi
+        fi
         ;;
     plasma)
         tput_yellow

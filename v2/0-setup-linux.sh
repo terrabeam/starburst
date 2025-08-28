@@ -191,6 +191,7 @@ tput_reset
 ##########################
 # Export selections for OS script
 ##########################
+export DETECTED_OS="$OS"
 export SELECTED_DE="$DE"
 export SELECTED_TWM="$TWM"
 export INSTALL_LEVEL

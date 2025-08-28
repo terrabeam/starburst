@@ -150,7 +150,7 @@ while [[ "$CURRENT_CODENAME" != "$LATEST_CODENAME" ]]; do
             ;;
     esac
 
-    CURRENT_CODENAME=$(grep -Po 'deb\s+\S+\s+\K\S+' /etc/apt/sources.list | grep -E '^(buster|bullseye|bookworm|trixie|forky)$' | head -n1)
+    CURRENT_CODENAME=$(grep -Po 'deb\s+\S+\s+\K\S+' /etc/apt/sources.list | grep -E '^(buster|bullseye|bookworm|trixie)$' | head -n1)
 done
 
 tput_green

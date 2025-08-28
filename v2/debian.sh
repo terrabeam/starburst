@@ -14,101 +14,155 @@ tput_purple() { tput setaf 5; }
 tput_cyan() { tput setaf 6; }
 tput_gray() { tput setaf 7; }
 
-echo
-tput_yellow
-echo "################################################################################"
-echo "################### Detected OS / Desktop Environmet / Tiling Window Manager"
-echo "################################################################################"
-tput_reset
-echo
-
-echo "Installing OS-specific packages..."
-echo "Selected DE: $SELECTED_DE"
-echo "Selected TWM: $SELECTED_TWM"
-echo "Installation Level: $INSTALL_LEVEL"
-
-if [[ "$SELECTED_DE" == "xfce" ]]; then
-    echo
-    tput_green
-    echo "################################################################################"
-    echo "################### Installing XFCE4"
-    echo "################################################################################"
-    tput_reset
-    echo
-
-    echo "Installing XFCE packages..."
-
+##########################
+# Resume marker check
+##########################
+if [[ -f /root/.debian_upgrade_continue ]]; then
+    echo "Resuming post-reboot Debian setup..."
+    rm -f /root/.debian_upgrade_continue
 fi
 
-if [[ "$SELECTED_DE" == "plasma" ]]; then
-    echo
-    tput_green
-    echo "################################################################################"
-    echo "################### Installing KDE Plasma 6"
-    echo "################################################################################"
-    tput_reset
-    echo
+##########################
+# Use exported variables from main detection script
+##########################
+DE="${SELECTED_DE:-none}"
+TWM="${SELECTED_TWM:-none}"
+INSTALL_LEVEL="${INSTALL_LEVEL:-minimal}"
 
-    echo "Installing Plasma packages..."
-fi
+echo "Starting Debian setup..."
+echo "DE: $DE, TWM: $TWM, Install Level: $INSTALL_LEVEL"
 
-if [[ "$SELECTED_DE" == "gnome" ]]; then
-    echo
-    tput_green
-    echo "################################################################################"
-    echo "################### Installing Gnome 48"
-    echo "################################################################################"
-    tput_reset
-    echo
+##########################
+# 1. Add contrib and non-free if missing
+##########################
+echo "Checking /etc/apt/sources.list for contrib/non-free..."
 
-    echo "Installing Gnome packages..."
-fi
+# Backup sources.list first
+cp /etc/apt/sources.list /etc/apt/sources.list.bak.$(date +%s)
 
-if [[ "$SELECTED_DE" == "none" ]]; then
-    echo
-    tput_green
-    echo "################################################################################"
-    echo "################### Installing no Desktop Environment"
-    echo "################################################################################"
-    tput_reset
-    echo
+# Add contrib and non-free if missing
+sed -i -r 's/^(deb\s+\S+\s+\S+)\s+(main)$/\1 main contrib non-free/' /etc/apt/sources.list
 
-    echo "Installing no Desktop Environment packages..."
-fi
+echo "Updated sources.list to include contrib/non-free where needed."
 
+##########################
+# 2. Full update and upgrade
+##########################
+echo "Updating package lists..."
+apt update
 
-if [[ "$SELECTED_TWM" == "chadwm" ]]; then
-    echo
-    tput_green
-    echo "################################################################################"
-    echo "################### Installing Chadwm"
-    echo "################################################################################"
-    tput_reset
-    echo
+echo "Upgrading installed packages..."
+apt -y full-upgrade
 
-    echo "Installing CHADWM..."
-fi
+echo "System updated. Rebooting now to continue..."
+touch /root/.debian_upgrade_continue
+reboot
 
-if [[ "$SELECTED_TWM" == "hyprland" ]]; then
-    echo
-    tput_green
-    echo "################################################################################"
-    echo "################### Installing Hyprland"
-    echo "################################################################################"
-    tput_reset
-    echo
+##########################
+# 3. Multi-stage major version upgrade
+##########################
+# This section runs after reboot
 
-    echo "Installing Hyperland..."
-fi
+CURRENT_DEBIAN_VERSION=$(cut -d. -f1 /etc/debian_version)
+LATEST_DEBIAN_VERSION=13  # adjust to latest stable when needed
 
-if [[ "$SELECTED_TWM" == "none" ]]; then
-    echo
-    tput_green
-    echo "################################################################################"
-    echo "################### Installing no Tiling Window Manager"
-    echo "################################################################################"
-    tput_reset
-    echo
+while [[ $CURRENT_DEBIAN_VERSION -lt $LATEST_DEBIAN_VERSION ]]; do
+    NEXT_VERSION=$((CURRENT_DEBIAN_VERSION+1))
+    echo "Detected Debian $CURRENT_DEBIAN_VERSION, next stable is $NEXT_VERSION."
+    read -rp "Do you want to upgrade to Debian $NEXT_VERSION? [y/N]: " choice
+    case "${choice,,}" in
+        y|yes)
+            echo "Preparing to upgrade from Debian $CURRENT_DEBIAN_VERSION to $NEXT_VERSION..."
 
-    echo "Installing no Tiling Window Manager packages..."
-fi
+            # Optional: convert version number to codename
+            case $NEXT_VERSION in
+                11) CODENAME="bullseye" ;;
+                12) CODENAME="bookworm" ;;
+                13) CODENAME="trixie" ;; # replace with current stable codename if different
+                *) CODENAME="" ;;
+            esac
+
+            if [[ -n "$CODENAME" ]]; then
+                sed -i -r "s/debian[0-9]*/$CODENAME/g" /etc/apt/sources.list
+            else
+                # fallback: replace major version number
+                sed -i -r "s/debian[0-9]*/debian$NEXT_VERSION/g" /etc/apt/sources.list
+            fi
+
+            # Update and full-upgrade
+            apt update
+            apt -y full-upgrade
+
+            echo "Upgrade to Debian $NEXT_VERSION complete. Rebooting..."
+            touch /root/.debian_upgrade_continue
+            reboot
+            ;;
+        *)
+            echo "Skipping upgrade to $NEXT_VERSION. Continuing with current version."
+            break
+            ;;
+    esac
+
+    # After reboot, detect version again
+    CURRENT_DEBIAN_VERSION=$(cut -d. -f1 /etc/debian_version)
+    echo "Current Debian version after reboot: $CURRENT_DEBIAN_VERSION"
+done
+
+echo "Debian is now at version $CURRENT_DEBIAN_VERSION."
+
+##########################
+# 4. Continue with DE/TWM/install level setup
+##########################
+echo "Continuing with Desktop Environment and Tiling WM installation..."
+
+# Example: install selected DE
+case "$DE" in
+    xfce)
+        echo "Installing XFCE..."
+        apt -y install task-xfce-desktop
+        ;;
+    plasma)
+        echo "Installing KDE Plasma..."
+        apt -y install task-kde-desktop
+        ;;
+    gnome)
+        echo "Installing GNOME..."
+        apt -y install task-gnome-desktop
+        ;;
+    none)
+        echo "No desktop environment selected."
+        ;;
+esac
+
+# Example: install Tiling WM
+case "$TWM" in
+    chadwm)
+        echo "Installing CHADWM..."
+        # add your CHADWM install commands here
+        ;;
+    hyprland)
+        echo "Installing Hyprland..."
+        # add your Hyprland install commands here
+        ;;
+    none)
+        echo "No tiling window manager selected."
+        ;;
+esac
+
+# Example: handle install level
+case "$INSTALL_LEVEL" in
+    minimal)
+        echo "Minimal installation selected."
+        ;;
+    full)
+        echo "Full installation selected."
+        ;;
+    workstation)
+        echo "Workstation installation selected."
+        ;;
+    server)
+        echo "Server installation selected."
+        ;;
+esac
+
+echo "Debian setup complete."

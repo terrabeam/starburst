@@ -14,6 +14,7 @@ tput_purple() { tput setaf 5; }
 tput_cyan() { tput setaf 6; }
 tput_gray() { tput setaf 7; }
 
+
 ##########################
 # Use exported variables from main detection script
 ##########################
@@ -74,20 +75,19 @@ fi
 ##########################
 CURRENT_DEBIAN_VERSION=$(cut -d. -f1 /etc/debian_version)
 
-# Fetch latest stable codename from Debian FTP
-LATEST_CODENAME=$(curl -s http://ftp.debian.org/debian/dists/ | grep -oP '(?<=href=")[^"]*(?=")' | grep -E '^[a-z]+$' | sort -V | tail -n1)
+# Reliable codename → version mapping
+declare -A DEBIAN_VERSIONS=(
+    [buster]=10
+    [bullseye]=11
+    [bookworm]=12
+    [trixie]=13
+    [forky]=14   # future release
+    [duke]=15   # future release
+)
 
-# Map codename → major version with fallback
-case "$LATEST_CODENAME" in
-    bullseye) LATEST_VERSION=11 ;;
-    bookworm) LATEST_VERSION=12 ;;
-    trixie)   LATEST_VERSION=13 ;;
-    forky)    LATEST_VERSION=14 ;; # example future release
-    *)
-        echo "Unknown Debian codename '$LATEST_CODENAME'. Assuming current system version is latest."
-        LATEST_VERSION=$CURRENT_DEBIAN_VERSION
-        ;;
-esac
+# Determine latest stable release
+LATEST_CODENAME=$(printf "%s\n" "${!DEBIAN_VERSIONS[@]}" | sort -V | tail -n1)
+LATEST_VERSION=${DEBIAN_VERSIONS[$LATEST_CODENAME]}
 
 echo "Latest Debian stable: $LATEST_CODENAME ($LATEST_VERSION)"
 
@@ -101,6 +101,7 @@ if [[ $CURRENT_DEBIAN_VERSION -lt $LATEST_VERSION ]]; then
         case "${choice,,}" in
             y|yes)
                 echo "Preparing to upgrade from Debian $CURRENT_DEBIAN_VERSION to $NEXT_VERSION..."
+                # Update sources.list for new release
                 sudo sed -i -r "s/debian[0-9]*/$LATEST_CODENAME/g" /etc/apt/sources.list
                 sudo apt update
                 sudo apt -y full-upgrade

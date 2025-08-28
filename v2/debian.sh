@@ -50,11 +50,26 @@ echo "Updated sources.list to include contrib/non-free where needed."
 tput_reset
 
 ##########################
-# 1a. Check for archive.debian.org and update to deb.debian.org
+# 1a. Check for archive.debian.org and update to deb.debian.org (only if Bullseye or newer)
 ##########################
-if grep -q "archive.debian.org" /etc/apt/sources.list; then
+CURRENT_CODENAME=$(grep -Po 'deb\s+\S+\s+\K\S+' /etc/apt/sources.list | grep -E '^(buster|bullseye|bookworm|trixie)$' | head -n1)
+DEBIAN_ORDER=(buster bullseye bookworm trixie)
+
+# Function to get numeric index of codename
+codename_index() {
+    local code="$1"
+    for i in "${!DEBIAN_ORDER[@]}"; do
+        [[ "${DEBIAN_ORDER[$i]}" == "$code" ]] && echo "$i" && return
+    done
+    echo -1
+}
+
+CURRENT_INDEX=$(codename_index "$CURRENT_CODENAME")
+BULLSEYE_INDEX=$(codename_index "bullseye")
+
+if [[ "$CURRENT_INDEX" -ge "$BULLSEYE_INDEX" ]] && grep -q "archive.debian.org" /etc/apt/sources.list; then
     tput_yellow
-    echo "Found archive.debian.org in sources.list, updating to deb.debian.org..."
+    echo "Found archive.debian.org in sources.list and system is Bullseye or newer, updating to deb.debian.org..."
     tput_reset
     sudo sed -i -r 's|archive\.debian\.org|deb.debian.org|g' /etc/apt/sources.list
     tput_green
@@ -123,8 +138,8 @@ fi
 ##########################
 # 3. Stepwise major version upgrade
 ##########################
-DEBIAN_SEQUENCE=(buster bullseye bookworm trixie forky)
-CURRENT_CODENAME=$(grep -Po 'deb\s+\S+\s+\K\S+' /etc/apt/sources.list | grep -E '^(buster|bullseye|bookworm|trixie|forky)$' | head -n1)
+DEBIAN_SEQUENCE=(buster bullseye bookworm trixie)
+CURRENT_CODENAME=$(grep -Po 'deb\s+\S+\s+\K\S+' /etc/apt/sources.list | grep -E '^(buster|bullseye|bookworm|trixie)$' | head -n1)
 LATEST_CODENAME=${DEBIAN_SEQUENCE[-1]}
 
 tput_cyan
@@ -199,7 +214,7 @@ while [[ "$CURRENT_CODENAME" != "$LATEST_CODENAME" ]]; do
             ;;
     esac
 
-    CURRENT_CODENAME=$(grep -Po 'deb\s+\S+\s+\K\S+' /etc/apt/sources.list | grep -E '^(buster|bullseye|bookworm|trixie|forky)$' | head -n1)
+    CURRENT_CODENAME=$(grep -Po 'deb\s+\S+\s+\K\S+' /etc/apt/sources.list | grep -E '^(buster|bullseye|bookworm|trixie)$' | head -n1)
 done
 
 tput_green

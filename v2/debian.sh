@@ -70,15 +70,24 @@ else
 fi
 
 ##########################
-# 3. Multi-stage major version upgrade (future-proof)
+# 3. Multi-stage major version upgrade (robust)
 ##########################
 CURRENT_DEBIAN_VERSION=$(cut -d. -f1 /etc/debian_version)
 
-# Fetch the latest stable codename dynamically from Debian FTP
-LATEST_CODENAME=$(curl -s http://ftp.debian.org/debian/dists/ | grep -oP '(?<=href=")[^"]*(?=")' | grep -E '^[a-z]+$' | sort -V | tail -n 1)
+# Fetch latest stable codename from Debian FTP
+LATEST_CODENAME=$(curl -s http://ftp.debian.org/debian/dists/ | grep -oP '(?<=href=")[^"]*(?=")' | grep -E '^[a-z]+$' | sort -V | tail -n1)
 
-# Fetch the major version for that codename
-LATEST_VERSION=$(curl -s "http://ftp.debian.org/debian/dists/$LATEST_CODENAME/Release" | grep -Po 'Version: \K\d+')
+# Map codename → major version with fallback
+case "$LATEST_CODENAME" in
+    bullseye) LATEST_VERSION=11 ;;
+    bookworm) LATEST_VERSION=12 ;;
+    trixie)   LATEST_VERSION=13 ;;
+    forky)    LATEST_VERSION=14 ;; # example future release
+    *)
+        echo "Unknown Debian codename '$LATEST_CODENAME'. Assuming current system version is latest."
+        LATEST_VERSION=$CURRENT_DEBIAN_VERSION
+        ;;
+esac
 
 echo "Latest Debian stable: $LATEST_CODENAME ($LATEST_VERSION)"
 
@@ -110,11 +119,12 @@ if [[ $CURRENT_DEBIAN_VERSION -lt $LATEST_VERSION ]]; then
 fi
 
 echo "Debian is now at version $CURRENT_DEBIAN_VERSION."
-echo "Continuing with Desktop Environment and Tiling WM installation..."
 
 ##########################
 # 4. Desktop Environment installation
 ##########################
+echo "Continuing with Desktop Environment and Tiling WM installation..."
+
 case "$DE" in
     xfce)
         echo "Installing XFCE..."

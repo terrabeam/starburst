@@ -1,18 +1,4 @@
 #!/bin/bash
-#set -e
-##################################################################################################################
-#tput setaf 0 = black
-#tput setaf 1 = red
-#tput setaf 2 = green
-#tput setaf 3 = yellow
-#tput setaf 4 = dark blue
-#tput setaf 5 = purple
-#tput setaf 6 = cyan
-#tput setaf 7 = gray
-#tput setaf 8 = light blue
-##################################################################################################################
-
-#!/bin/bash
 set -euo pipefail
 
 ##########################
@@ -53,7 +39,10 @@ case "$OS_ID" in
     ubuntu) OS="ubuntu" ;;
     fedora) OS="fedora" ;;
     *)
-        if [[ "$OS_LIKE" == *"arch"* ]]; then
+        # fallback detection using ID_LIKE for derivatives
+        if [[ "$OS_LIKE" == *"ubuntu"* ]]; then
+            OS="ubuntu"
+        elif [[ "$OS_LIKE" == *"arch"* ]]; then
             OS="arch"
         elif [[ "$OS_LIKE" == *"debian"* ]]; then
             OS="debian"

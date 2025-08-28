@@ -67,6 +67,12 @@ fi
 ##########################
 # 3. Multi-stage major version upgrade (future-proof)
 ##########################
+# Ensure curl is installed
+if ! command -v curl >/dev/null 2>&1; then
+    echo "curl is not installed. Installing..."
+    sudo apt update
+    sudo apt -y install curl
+fi
 
 # Detect current version
 CURRENT_DEBIAN_VERSION=$(cut -d. -f1 /etc/debian_version)

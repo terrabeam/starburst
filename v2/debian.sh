@@ -57,13 +57,30 @@ echo "Updating package lists..."
 tput_reset
 sudo apt update
 
+# Autoremove before full-upgrade
+AUTOREMOVE_PENDING=$(apt -s autoremove | grep -E 'Remv' || true)
+if [[ -n "$AUTOREMOVE_PENDING" ]]; then
+    tput_yellow
+    echo "Removing packages that are no longer required before upgrade..."
+    tput_reset
+    sudo apt -y autoremove
+fi
+
 tput_yellow
 echo "Upgrading installed packages..."
 tput_reset
 sudo apt -y full-upgrade
 
-UPGRADE_PENDING=$(apt list --upgradable 2>/dev/null | grep -v Listing || true)
+# Autoremove after full-upgrade
+AUTOREMOVE_PENDING=$(apt -s autoremove | grep -E 'Remv' || true)
+if [[ -n "$AUTOREMOVE_PENDING" ]]; then
+    tput_yellow
+    echo "Removing packages that are no longer required after upgrade..."
+    tput_reset
+    sudo apt -y autoremove
+fi
 
+UPGRADE_PENDING=$(apt list --upgradable 2>/dev/null | grep -v Listing || true)
 if [[ -n "$UPGRADE_PENDING" ]]; then
     tput_red
     echo
@@ -93,8 +110,8 @@ fi
 ##########################
 # 3. Stepwise major version upgrade
 ##########################
-DEBIAN_SEQUENCE=(buster bullseye bookworm trixie)
-CURRENT_CODENAME=$(grep -Po 'deb\s+\S+\s+\K\S+' /etc/apt/sources.list | grep -E '^(buster|bullseye|bookworm|trixie)$' | head -n1)
+DEBIAN_SEQUENCE=(buster bullseye bookworm trixie forky)
+CURRENT_CODENAME=$(grep -Po 'deb\s+\S+\s+\K\S+' /etc/apt/sources.list | grep -E '^(buster|bullseye|bookworm|trixie|forky)$' | head -n1)
 LATEST_CODENAME=${DEBIAN_SEQUENCE[-1]}
 
 tput_cyan
@@ -134,13 +151,32 @@ while [[ "$CURRENT_CODENAME" != "$LATEST_CODENAME" ]]; do
             echo "Updating packages..."
             tput_reset
             sudo apt update
+
+            # Autoremove before full-upgrade
+            AUTOREMOVE_PENDING=$(apt -s autoremove | grep -E 'Remv' || true)
+            if [[ -n "$AUTOREMOVE_PENDING" ]]; then
+                tput_yellow
+                echo "Removing packages that are no longer required before upgrade..."
+                tput_reset
+                sudo apt -y autoremove
+            fi
+
             sudo apt -y full-upgrade
 
+            # Autoremove after full-upgrade
+            AUTOREMOVE_PENDING=$(apt -s autoremove | grep -E 'Remv' || true)
+            if [[ -n "$AUTOREMOVE_PENDING" ]]; then
+                tput_yellow
+                echo "Removing packages that are no longer required after upgrade..."
+                tput_reset
+                sudo apt -y autoremove
+            fi
+
             tput_green
-            echo "Upgrade to $NEXT_CODENAME complete. Reboot recommended."
+            echo "Upgrade to $NEXT_CODENAME complete. A reboot is recommended."
             tput_reset
-            read -rp "Please reboot and restart this script to continue. Press Enter to exit..." _
-            exit 0
+            read -rp "Press Enter to reboot..." _
+            sudo reboot
             ;;
         *)
             tput_yellow
@@ -150,7 +186,7 @@ while [[ "$CURRENT_CODENAME" != "$LATEST_CODENAME" ]]; do
             ;;
     esac
 
-    CURRENT_CODENAME=$(grep -Po 'deb\s+\S+\s+\K\S+' /etc/apt/sources.list | grep -E '^(buster|bullseye|bookworm|trixie)$' | head -n1)
+    CURRENT_CODENAME=$(grep -Po 'deb\s+\S+\s+\K\S+' /etc/apt/sources.list | grep -E '^(buster|bullseye|bookworm|trixie|forky)$' | head -n1)
 done
 
 tput_green

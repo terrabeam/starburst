@@ -40,7 +40,7 @@ case "$OS_ID" in
     ubuntu) OS="ubuntu" ;;
     fedora) OS="fedora" ;;
     *)
-        # fallback detection using ID_LIKE for derivatives
+        # fallback for derivatives
         if [[ "$OS_LIKE" == *"ubuntu"* ]]; then
             OS="ubuntu"
         elif [[ "$OS_LIKE" == *"arch"* ]]; then
@@ -154,39 +154,78 @@ echo "##########################################################################
 tput_reset
 
 ##########################
-# Preflight check for setup script
+# Installation Level Selection
 ##########################
-SCRIPT="./${OS}-${DE}-${TWM}.sh"
+echo
+tput_yellow
+echo "################################################################"
+echo "################### Installation Level Selection"
+echo "################################################################"
+tput_reset
+echo
 
-if [[ ! -x "$SCRIPT" ]]; then
+INSTALL_LEVEL="minimal"  # default
+
+while true; do
+    echo "Select installation level:"
+    echo "  1) minimal"
+    echo "  2) full"
+    echo "  3) workstation"
+    echo "  4) server"
+    read -rp "Enter choice [1/2/3/4] (default: 1): " choice
+    case "$choice" in
+        1|"") INSTALL_LEVEL="minimal"; break ;;
+        2) INSTALL_LEVEL="full"; break ;;
+        3) INSTALL_LEVEL="workstation"; break ;;
+        4) INSTALL_LEVEL="server"; break ;;
+        *) echo "Invalid option. Please enter 1, 2, 3, or 4." ;;
+    esac
+done
+
+tput_cyan
+echo "################################################################################"
+echo "Selected Installation Level: $INSTALL_LEVEL"
+echo "################################################################################"
+tput_reset
+
+##########################
+# Export selections for OS script
+##########################
+export SELECTED_DE="$DE"
+export SELECTED_TWM="$TWM"
+export INSTALL_LEVEL
+
+##########################
+# Determine OS script
+##########################
+case "$OS" in
+    debian) OS_SCRIPT="./debian.sh" ;;
+    ubuntu) OS_SCRIPT="./ubuntu.sh" ;;
+    arch)   OS_SCRIPT="./arch.sh" ;;
+    fedora) OS_SCRIPT="./fedora.sh" ;;
+    *)
+        tput_red
+        echo "No OS script available for $OS"
+        tput_reset
+        exit 1
+        ;;
+esac
+
+##########################
+# Preflight check
+##########################
+if [[ ! -x "$OS_SCRIPT" ]]; then
     tput_red
-    echo "################################################################################"
-    echo "ERROR: Setup script not found: $SCRIPT"
-    echo "Please create the appropriate script for your configuration."
-    echo "Expected script naming: os-de-twm.sh"
-    echo
-    echo "Examples you might need:"
-    echo "  arch-xfce-none.sh"
-    echo "  ubuntu-gnome-hyprland.sh"
-    echo "  debian-none-none.sh"
-    echo "  fedora-plasma-chadwm.sh"
-    echo "################################################################################"
+    echo "ERROR: OS script not found or not executable: $OS_SCRIPT"
     tput_reset
     exit 1
 fi
 
 ##########################
-# Headless detection
+# Run OS script
 ##########################
-if [[ "$DE" == "none" && "$TWM" == "none" ]]; then
-    echo "Detected headless system. Running headless setup..."
-fi
-
-##########################
-# Run setup script
-##########################
-echo "Running setup: $SCRIPT"
-"$SCRIPT"
+echo "Running OS script: $OS_SCRIPT"
+"$OS_SCRIPT"
 
 tput_yellow
 echo "################################################################"

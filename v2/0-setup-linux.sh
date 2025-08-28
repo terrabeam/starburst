@@ -92,6 +92,7 @@ case "${DE_RAW,,}" in
 esac
 
 if [[ -n "$DE" ]]; then
+    echo
     tput_cyan
     echo "################################################################################"
     echo "Detected Desktop Environment: $DE (${DE_RAW})"
@@ -99,6 +100,7 @@ if [[ -n "$DE" ]]; then
     tput_reset
 else
     # No DE detected — ask user
+    echo
     echo "No Desktop Environment detected. Select one to install:"
     while true; do
         echo "  1) XFCE"
@@ -114,6 +116,7 @@ else
             *) echo "Invalid option. Please enter 1, 2, 3, or x." ;;
         esac
     done
+    echo
     tput_cyan
     echo "################################################################################"
     echo "Selected Desktop Environment: $DE"
@@ -134,6 +137,7 @@ echo
 
 TWM="none"
 while true; do
+    echo
     echo "Select a tiling window manager:"
     echo "  1) CHADWM"
     echo "  2) Hyprland"
@@ -147,6 +151,7 @@ while true; do
     esac
 done
 
+echo
 tput_cyan
 echo "################################################################################"
 echo "Selected Tiling WM: $TWM"
@@ -167,6 +172,7 @@ echo
 INSTALL_LEVEL="minimal"  # default
 
 while true; do
+    echo
     echo "Select installation level:"
     echo "  1) minimal"
     echo "  2) full"
@@ -182,6 +188,7 @@ while true; do
     esac
 done
 
+echo
 tput_cyan
 echo "################################################################################"
 echo "Selected Installation Level: $INSTALL_LEVEL"
@@ -207,6 +214,7 @@ case "$OS" in
     fedora) OS_SCRIPT="./fedora.sh" ;;
     *)
         tput_red
+        echo
         echo "No OS script available for $OS"
         tput_reset
         exit 1
@@ -218,6 +226,7 @@ esac
 ##########################
 if [[ ! -x "$OS_SCRIPT" ]]; then
     tput_red
+    echo
     echo "ERROR: OS script not found or not executable: $OS_SCRIPT"
     tput_reset
     exit 1
@@ -226,9 +235,11 @@ fi
 ##########################
 # Run OS script
 ##########################
+echo
 echo "Running OS script: $OS_SCRIPT"
 "$OS_SCRIPT"
 
+echo
 tput_yellow
 echo "################################################################"
 echo "End Detection"

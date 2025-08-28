@@ -25,13 +25,20 @@ echo "Starting Debian setup..."
 echo "DE: $DE, TWM: $TWM, Install Level: $INSTALL_LEVEL"
 
 ##########################
+# 0. Ensure curl is installed
+##########################
+if ! command -v curl >/dev/null 2>&1; then
+    echo "curl is not installed. Installing..."
+    sudo apt update
+    sudo apt -y install curl
+fi
+
+##########################
 # 1. Add contrib and non-free if missing
 ##########################
 echo "Checking /etc/apt/sources.list for contrib/non-free..."
-
 sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak.$(date +%s)
 sudo sed -i -r 's/^(deb\s+\S+\s+\S+)\s+(main)$/\1 main contrib non-free/' /etc/apt/sources.list
-
 echo "Updated sources.list to include contrib/non-free where needed."
 
 ##########################
@@ -39,11 +46,9 @@ echo "Updated sources.list to include contrib/non-free where needed."
 ##########################
 echo "Updating package lists..."
 sudo apt update
-
 echo "Upgrading installed packages..."
 sudo apt -y full-upgrade
 
-# Check if any packages were upgraded
 UPGRADE_PENDING=$(apt list --upgradable 2>/dev/null | grep -v Listing || true)
 
 if [[ -n "$UPGRADE_PENDING" ]]; then
@@ -67,20 +72,12 @@ fi
 ##########################
 # 3. Multi-stage major version upgrade (future-proof)
 ##########################
-# Ensure curl is installed
-if ! command -v curl >/dev/null 2>&1; then
-    echo "curl is not installed. Installing..."
-    sudo apt update
-    sudo apt -y install curl
-fi
-
-# Detect current version
 CURRENT_DEBIAN_VERSION=$(cut -d. -f1 /etc/debian_version)
 
-# Fetch latest stable codename dynamically
-LATEST_CODENAME=$(curl -s https://www.debian.org/releases/ | grep -oP 'current stable distribution is \K\w+')
+# Fetch the latest stable codename dynamically from Debian FTP
+LATEST_CODENAME=$(curl -s http://ftp.debian.org/debian/dists/ | grep -oP '(?<=href=")[^"]*(?=")' | grep -E '^[a-z]+$' | sort -V | tail -n 1)
 
-# Fetch latest major version from Release file
+# Fetch the major version for that codename
 LATEST_VERSION=$(curl -s "http://ftp.debian.org/debian/dists/$LATEST_CODENAME/Release" | grep -Po 'Version: \K\d+')
 
 echo "Latest Debian stable: $LATEST_CODENAME ($LATEST_VERSION)"
@@ -93,14 +90,9 @@ while [[ $CURRENT_DEBIAN_VERSION -lt $LATEST_VERSION ]]; do
     case "${choice,,}" in
         y|yes)
             echo "Preparing to upgrade from Debian $CURRENT_DEBIAN_VERSION to $NEXT_VERSION..."
-
-            # Update sources.list for new release
             sudo sed -i -r "s/debian[0-9]*/$LATEST_CODENAME/g" /etc/apt/sources.list
-
-            # Update and upgrade
             sudo apt update
             sudo apt -y full-upgrade
-
             echo
             echo "Upgrade to Debian $NEXT_VERSION complete. A reboot is recommended before continuing."
             read -rp "Please reboot your system and restart this script to continue. Press Enter to exit..." _
@@ -111,7 +103,6 @@ while [[ $CURRENT_DEBIAN_VERSION -lt $LATEST_VERSION ]]; do
             break
             ;;
     esac
-
     CURRENT_DEBIAN_VERSION=$(cut -d. -f1 /etc/debian_version)
 done
 
@@ -122,7 +113,6 @@ echo "Debian is now at version $CURRENT_DEBIAN_VERSION."
 ##########################
 echo "Continuing with Desktop Environment and Tiling WM installation..."
 
-# Desktop Environment installation
 case "$DE" in
     xfce)
         echo "Installing XFCE..."
@@ -141,22 +131,20 @@ case "$DE" in
         ;;
 esac
 
-# Tiling WM installation
 case "$TWM" in
     chadwm)
         echo "Installing CHADWM..."
-        # add CHADWM install commands here (with sudo if needed)
+        # add CHADWM install commands here (use sudo if needed)
         ;;
     hyprland)
         echo "Installing Hyprland..."
-        # add Hyprland install commands here (with sudo if needed)
+        # add Hyprland install commands here (use sudo if needed)
         ;;
     none)
         echo "No tiling window manager selected."
         ;;
 esac
 
-# Handle installation level
 case "$INSTALL_LEVEL" in
     minimal)
         echo "Minimal installation selected."

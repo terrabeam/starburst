@@ -14,7 +14,6 @@ tput_purple() { tput setaf 5; }
 tput_cyan() { tput setaf 6; }
 tput_gray() { tput setaf 7; }
 
-
 ##########################
 # Use exported variables from main detection script
 ##########################
@@ -22,14 +21,18 @@ DE="${SELECTED_DE:-none}"
 TWM="${SELECTED_TWM:-none}"
 INSTALL_LEVEL="${INSTALL_LEVEL:-minimal}"
 
+tput_cyan
 echo "Starting Debian setup..."
+tput_reset
 echo "DE: $DE, TWM: $TWM, Install Level: $INSTALL_LEVEL"
 
 ##########################
 # 0. Ensure curl is installed
 ##########################
 if ! command -v curl >/dev/null 2>&1; then
+    tput_yellow
     echo "curl is not installed. Installing..."
+    tput_reset
     sudo apt update
     sudo apt -y install curl
 fi
@@ -37,110 +40,149 @@ fi
 ##########################
 # 1. Add contrib and non-free if missing
 ##########################
+tput_yellow
 echo "Checking /etc/apt/sources.list for contrib/non-free..."
+tput_reset
 sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak.$(date +%s)
 sudo sed -i -r 's/^(deb\s+\S+\s+\S+)\s+(main)$/\1 main contrib non-free/' /etc/apt/sources.list
+tput_green
 echo "Updated sources.list to include contrib/non-free where needed."
+tput_reset
 
 ##########################
 # 2. Full update and upgrade
 ##########################
+tput_yellow
 echo "Updating package lists..."
+tput_reset
 sudo apt update
+
+tput_yellow
 echo "Upgrading installed packages..."
+tput_reset
 sudo apt -y full-upgrade
 
 UPGRADE_PENDING=$(apt list --upgradable 2>/dev/null | grep -v Listing || true)
 
 if [[ -n "$UPGRADE_PENDING" ]]; then
+    tput_red
     echo
     echo "Some packages were upgraded. A reboot is recommended before continuing."
+    tput_reset
     read -rp "Reboot now? [y/N]: " reboot_choice
     case "${reboot_choice,,}" in
         y|yes)
+            tput_red
             echo "Rebooting now. After reboot, please restart this script to continue..."
+            tput_reset
             sudo reboot
             ;;
         *)
+            tput_yellow
             echo "Skipping reboot. Make sure to reboot manually before continuing upgrades."
+            tput_reset
             exit 0
             ;;
     esac
 else
+    tput_green
     echo "All packages are up to date. Continuing to Debian major version check..."
+    tput_reset
 fi
 
 ##########################
-# 3. Multi-stage major version upgrade (robust)
+# 3. Stepwise major version upgrade
 ##########################
-CURRENT_DEBIAN_VERSION=$(cut -d. -f1 /etc/debian_version)
+DEBIAN_SEQUENCE=(buster bullseye bookworm trixie forky)
+CURRENT_CODENAME=$(grep -Po 'deb\s+\S+\s+\K\S+' /etc/apt/sources.list | grep -E '^(buster|bullseye|bookworm|trixie|forky)$' | head -n1)
+LATEST_CODENAME=${DEBIAN_SEQUENCE[-1]}
 
-# Reliable codename → version mapping
-declare -A DEBIAN_VERSIONS=(
-    [buster]=10
-    [bullseye]=11
-    [bookworm]=12
-    [trixie]=13
-    [forky]=14   # future release
-    [duke]=15   # future release
-)
+tput_cyan
+echo "Current codename: $CURRENT_CODENAME"
+echo "Latest stable codename: $LATEST_CODENAME"
+tput_reset
 
-# Determine latest stable release
-LATEST_CODENAME=$(printf "%s\n" "${!DEBIAN_VERSIONS[@]}" | sort -V | tail -n1)
-LATEST_VERSION=${DEBIAN_VERSIONS[$LATEST_CODENAME]}
-
-echo "Latest Debian stable: $LATEST_CODENAME ($LATEST_VERSION)"
-
-# Only run upgrade loop if needed
-if [[ $CURRENT_DEBIAN_VERSION -lt $LATEST_VERSION ]]; then
-    while [[ $CURRENT_DEBIAN_VERSION -lt $LATEST_VERSION ]]; do
-        NEXT_VERSION=$((CURRENT_DEBIAN_VERSION+1))
-        echo
-        echo "Detected Debian $CURRENT_DEBIAN_VERSION, next major version available: $NEXT_VERSION ($LATEST_CODENAME)."
-        read -rp "Do you want to upgrade to Debian $NEXT_VERSION? [y/N]: " choice
-        case "${choice,,}" in
-            y|yes)
-                echo "Preparing to upgrade from Debian $CURRENT_DEBIAN_VERSION to $NEXT_VERSION..."
-                # Update sources.list for new release
-                sudo sed -i -r "s/debian[0-9]*/$LATEST_CODENAME/g" /etc/apt/sources.list
-                sudo apt update
-                sudo apt -y full-upgrade
-                echo
-                echo "Upgrade to Debian $NEXT_VERSION complete. A reboot is recommended before continuing."
-                read -rp "Please reboot your system and restart this script to continue. Press Enter to exit..." _
-                exit 0
-                ;;
-            *)
-                echo "Skipping upgrade to $NEXT_VERSION. Continuing with current version."
-                break
-                ;;
-        esac
-        CURRENT_DEBIAN_VERSION=$(cut -d. -f1 /etc/debian_version)
+while [[ "$CURRENT_CODENAME" != "$LATEST_CODENAME" ]]; do
+    NEXT_CODENAME=""
+    for i in "${!DEBIAN_SEQUENCE[@]}"; do
+        if [[ "${DEBIAN_SEQUENCE[$i]}" == "$CURRENT_CODENAME" ]]; then
+            NEXT_CODENAME="${DEBIAN_SEQUENCE[$((i+1))]}"
+            break
+        fi
     done
-fi
 
-echo "Debian is now at version $CURRENT_DEBIAN_VERSION."
+    if [[ -z "$NEXT_CODENAME" ]]; then
+        tput_red
+        echo "Error: Cannot determine next codename after $CURRENT_CODENAME"
+        tput_reset
+        exit 1
+    fi
+
+    tput_yellow
+    echo
+    echo "Detected codename $CURRENT_CODENAME, next stable version: $NEXT_CODENAME"
+    tput_reset
+    read -rp "Do you want to upgrade to $NEXT_CODENAME? [y/N]: " choice
+    case "${choice,,}" in
+        y|yes)
+            tput_yellow
+            echo "Updating sources.list to $NEXT_CODENAME..."
+            tput_reset
+            sudo sed -i -r "s/\b$CURRENT_CODENAME\b/$NEXT_CODENAME/g" /etc/apt/sources.list
+
+            tput_yellow
+            echo "Updating packages..."
+            tput_reset
+            sudo apt update
+            sudo apt -y full-upgrade
+
+            tput_green
+            echo "Upgrade to $NEXT_CODENAME complete. Reboot recommended."
+            tput_reset
+            read -rp "Please reboot and restart this script to continue. Press Enter to exit..." _
+            exit 0
+            ;;
+        *)
+            tput_yellow
+            echo "Skipping upgrade to $NEXT_CODENAME. Continuing with current version."
+            tput_reset
+            break
+            ;;
+    esac
+
+    CURRENT_CODENAME=$(grep -Po 'deb\s+\S+\s+\K\S+' /etc/apt/sources.list | grep -E '^(buster|bullseye|bookworm|trixie|forky)$' | head -n1)
+done
+
+tput_green
+echo "Debian is now at codename $CURRENT_CODENAME. Continuing with DE/TWM installation..."
+tput_reset
 
 ##########################
 # 4. Desktop Environment installation
 ##########################
-echo "Continuing with Desktop Environment and Tiling WM installation..."
-
 case "$DE" in
     xfce)
+        tput_yellow
         echo "Installing XFCE..."
+        tput_reset
         sudo apt -y install task-xfce-desktop
         ;;
     plasma)
+        tput_yellow
         echo "Installing KDE Plasma..."
+        tput_reset
         sudo apt -y install task-kde-desktop
         ;;
     gnome)
+        tput_yellow
         echo "Installing GNOME..."
+        tput_reset
         sudo apt -y install task-gnome-desktop
         ;;
     none)
+        tput_gray
         echo "No desktop environment selected."
+        tput_reset
         ;;
 esac
 
@@ -149,15 +191,21 @@ esac
 ##########################
 case "$TWM" in
     chadwm)
+        tput_yellow
         echo "Installing CHADWM..."
-        # add CHADWM install commands here with sudo if needed
+        tput_reset
+        # add CHADWM install commands here
         ;;
     hyprland)
+        tput_yellow
         echo "Installing Hyprland..."
-        # add Hyprland install commands here with sudo if needed
+        tput_reset
+        # add Hyprland install commands here
         ;;
     none)
+        tput_gray
         echo "No tiling window manager selected."
+        tput_reset
         ;;
 esac
 
@@ -166,17 +214,27 @@ esac
 ##########################
 case "$INSTALL_LEVEL" in
     minimal)
+        tput_blue
         echo "Minimal installation selected."
+        tput_reset
         ;;
     full)
+        tput_blue
         echo "Full installation selected."
+        tput_reset
         ;;
     workstation)
+        tput_blue
         echo "Workstation installation selected."
+        tput_reset
         ;;
     server)
+        tput_blue
         echo "Server installation selected."
+        tput_reset
         ;;
 esac
 
+tput_green
 echo "Debian setup complete."
+tput_reset

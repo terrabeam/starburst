@@ -26,55 +26,58 @@ INSTALL_LEVEL="${INSTALL_LEVEL:-minimal}"
 ##########################
 # 4. Desktop Environment installation
 ##########################
-case "$DE" in
-    xfce)
+tput_yellow
+echo "Installing XFCE..."
+tput_reset
+
+#detect if XFCE and SDDM are installed and if not install them
+if [[ -z "$DDE" ]]; then
+    tput_cyan
+    echo
+    echo "No Desktop Environment detected. Installing XFCE (light setup with SDDM)..."
+    tput_reset
+
+    sudo apt update
+    sudo apt install -y --no-install-recommends xfce4 xfce4-goodies sddm
+
+    # Enable SDDM as the display manager
+    sudo systemctl enable sddm
+
+    tput_green
+    echo
+    echo "XFCE with SDDM installed successfully."
+    echo "You can reboot now to start XFCE."
+    tput_reset
+else
+    tput_cyan
+    echo
+    echo "You already have $DE installed."
+    tput_reset
+
+    # Check if LightDM is installed and active
+    if systemctl is-active --quiet lightdm; then
         tput_yellow
-        echo "Installing XFCE..."
+        echo
+        echo "LightDM is currently active. Replacing with SDDM..."
         tput_reset
-        
-        #sudo apt -y install task-xfce-desktop
-        if [[ -z "$DDE" ]]; then
-            tput_cyan
-            echo "No Desktop Environment detected. Installing XFCE (light setup with SDDM)..."
-            tput_reset
 
-            sudo apt update
-            sudo apt install -y xfce4 xfce4-goodies sddm
+        # Disable and remove LightDM
+        sudo systemctl disable lightdm
+        sudo apt purge -y lightdm lightdm-gtk-greeter
 
-            # Enable SDDM as the display manager
-            sudo systemctl enable sddm
+        # Install and enable SDDM
+        sudo apt install -y sddm
+        sudo systemctl enable sddm
 
-            tput_green
-            echo "XFCE with SDDM installed successfully."
-            echo "You can reboot now to start XFCE."
-            tput_reset
-        else
-            tput_cyan
-            echo "You already have $DE installed."
-            tput_reset
-
-            # Check if LightDM is installed and active
-            if systemctl is-active --quiet lightdm; then
-                tput_yellow
-                echo "LightDM is currently active. Replacing with SDDM..."
-                tput_reset
-
-                # Disable and remove LightDM
-                sudo systemctl disable lightdm
-                sudo apt purge -y lightdm lightdm-gtk-greeter
-
-                # Install and enable SDDM
-                sudo apt install -y sddm
-                sudo systemctl enable sddm
-
-                tput_green
-                echo "LightDM removed and replaced with SDDM."
-                tput_reset
-            else
-                tput_cyan
-                echo "No LightDM detected, leaving current display manager unchanged."
-                tput_reset
-            fi
-        fi
-        ;;
-esac
+        tput_green
+        echo
+        echo "LightDM removed and replaced with SDDM."
+        tput_reset
+    else
+        tput_cyan
+        echo
+        echo "No LightDM detected, leaving current display manager unchanged."
+        tput_reset
+    fi
+fi
+;;

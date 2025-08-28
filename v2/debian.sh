@@ -15,14 +15,6 @@ tput_cyan() { tput setaf 6; }
 tput_gray() { tput setaf 7; }
 
 ##########################
-# Resume marker check
-##########################
-if [[ -f /root/.debian_upgrade_continue ]]; then
-    echo "Resuming post-reboot Debian setup..."
-    rm -f /root/.debian_upgrade_continue
-fi
-
-##########################
 # Use exported variables from main detection script
 ##########################
 DE="${SELECTED_DE:-none}"
@@ -37,10 +29,7 @@ echo "DE: $DE, TWM: $TWM, Install Level: $INSTALL_LEVEL"
 ##########################
 echo "Checking /etc/apt/sources.list for contrib/non-free..."
 
-# Backup sources.list first
 sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak.$(date +%s)
-
-# Add contrib and non-free if missing
 sudo sed -i -r 's/^(deb\s+\S+\s+\S+)\s+(main)$/\1 main contrib non-free/' /etc/apt/sources.list
 
 echo "Updated sources.list to include contrib/non-free where needed."
@@ -54,48 +43,62 @@ sudo apt update
 echo "Upgrading installed packages..."
 sudo apt -y full-upgrade
 
-echo "System updated. Rebooting now to continue..."
-sudo touch /root/.debian_upgrade_continue
-sudo reboot
+# Check if any packages were upgraded
+UPGRADE_PENDING=$(apt list --upgradable 2>/dev/null | grep -v Listing || true)
+
+if [[ -n "$UPGRADE_PENDING" ]]; then
+    echo
+    echo "Some packages were upgraded. A reboot is recommended before continuing."
+    read -rp "Reboot now? [y/N]: " reboot_choice
+    case "${reboot_choice,,}" in
+        y|yes)
+            echo "Rebooting now. After reboot, please restart this script to continue..."
+            sudo reboot
+            ;;
+        *)
+            echo "Skipping reboot. Make sure to reboot manually before continuing upgrades."
+            exit 0
+            ;;
+    esac
+else
+    echo "All packages are up to date. Continuing to Debian major version check..."
+fi
 
 ##########################
-# 3. Multi-stage major version upgrade
+# 3. Multi-stage major version upgrade (future-proof)
 ##########################
-# This section runs after reboot
 
+# Detect current version
 CURRENT_DEBIAN_VERSION=$(cut -d. -f1 /etc/debian_version)
-LATEST_DEBIAN_VERSION=13  # adjust to latest stable when needed
 
-while [[ $CURRENT_DEBIAN_VERSION -lt $LATEST_DEBIAN_VERSION ]]; do
+# Fetch latest stable codename dynamically
+LATEST_CODENAME=$(curl -s https://www.debian.org/releases/ | grep -oP 'current stable distribution is \K\w+')
+
+# Fetch latest major version from Release file
+LATEST_VERSION=$(curl -s "http://ftp.debian.org/debian/dists/$LATEST_CODENAME/Release" | grep -Po 'Version: \K\d+')
+
+echo "Latest Debian stable: $LATEST_CODENAME ($LATEST_VERSION)"
+
+while [[ $CURRENT_DEBIAN_VERSION -lt $LATEST_VERSION ]]; do
     NEXT_VERSION=$((CURRENT_DEBIAN_VERSION+1))
-    echo "Detected Debian $CURRENT_DEBIAN_VERSION, next stable is $NEXT_VERSION."
+    echo
+    echo "Detected Debian $CURRENT_DEBIAN_VERSION, next major version available: $NEXT_VERSION ($LATEST_CODENAME)."
     read -rp "Do you want to upgrade to Debian $NEXT_VERSION? [y/N]: " choice
     case "${choice,,}" in
         y|yes)
             echo "Preparing to upgrade from Debian $CURRENT_DEBIAN_VERSION to $NEXT_VERSION..."
 
-            # Optional: convert version number to codename
-            case $NEXT_VERSION in
-                11) CODENAME="bullseye" ;;
-                12) CODENAME="bookworm" ;;
-                13) CODENAME="trixie" ;; # replace with current stable codename if different
-                *) CODENAME="" ;;
-            esac
+            # Update sources.list for new release
+            sudo sed -i -r "s/debian[0-9]*/$LATEST_CODENAME/g" /etc/apt/sources.list
 
-            if [[ -n "$CODENAME" ]]; then
-                sudo sed -i -r "s/debian[0-9]*/$CODENAME/g" /etc/apt/sources.list
-            else
-                # fallback: replace major version number
-                sudo sed -i -r "s/debian[0-9]*/debian$NEXT_VERSION/g" /etc/apt/sources.list
-            fi
-
-            # Update and full-upgrade
+            # Update and upgrade
             sudo apt update
             sudo apt -y full-upgrade
 
-            echo "Upgrade to Debian $NEXT_VERSION complete. Rebooting..."
-            sudo touch /root/.debian_upgrade_continue
-            sudo reboot
+            echo
+            echo "Upgrade to Debian $NEXT_VERSION complete. A reboot is recommended before continuing."
+            read -rp "Please reboot your system and restart this script to continue. Press Enter to exit..." _
+            exit 0
             ;;
         *)
             echo "Skipping upgrade to $NEXT_VERSION. Continuing with current version."
@@ -103,9 +106,7 @@ while [[ $CURRENT_DEBIAN_VERSION -lt $LATEST_DEBIAN_VERSION ]]; do
             ;;
     esac
 
-    # After reboot, detect version again
     CURRENT_DEBIAN_VERSION=$(cut -d. -f1 /etc/debian_version)
-    echo "Current Debian version after reboot: $CURRENT_DEBIAN_VERSION"
 done
 
 echo "Debian is now at version $CURRENT_DEBIAN_VERSION."
@@ -115,41 +116,41 @@ echo "Debian is now at version $CURRENT_DEBIAN_VERSION."
 ##########################
 echo "Continuing with Desktop Environment and Tiling WM installation..."
 
-# Example: install selected DE
+# Desktop Environment installation
 case "$DE" in
     xfce)
         echo "Installing XFCE..."
-        #apt -y install task-xfce-desktop
+        sudo apt -y install task-xfce-desktop
         ;;
     plasma)
         echo "Installing KDE Plasma..."
-        #apt -y install task-kde-desktop
+        sudo apt -y install task-kde-desktop
         ;;
     gnome)
         echo "Installing GNOME..."
-        #apt -y install task-gnome-desktop
+        sudo apt -y install task-gnome-desktop
         ;;
     none)
-        #echo "No desktop environment selected."
+        echo "No desktop environment selected."
         ;;
 esac
 
-# Example: install Tiling WM
+# Tiling WM installation
 case "$TWM" in
     chadwm)
         echo "Installing CHADWM..."
-        # add your CHADWM install commands here
+        # add CHADWM install commands here (with sudo if needed)
         ;;
     hyprland)
         echo "Installing Hyprland..."
-        # add your Hyprland install commands here
+        # add Hyprland install commands here (with sudo if needed)
         ;;
     none)
         echo "No tiling window manager selected."
         ;;
 esac
 
-# Example: handle install level
+# Handle installation level
 case "$INSTALL_LEVEL" in
     minimal)
         echo "Minimal installation selected."

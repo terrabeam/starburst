@@ -47,7 +47,8 @@ if [[ -z "$DDE" ]]; then
     gnome-settings-daemon \
     gnome-tweaks \
     network-manager-gnome \
-    gnome-keyring
+    gnome-keyring \
+    gnome-session
 
     # Enable SDDM as the display manager
     sudo systemctl enable sddm

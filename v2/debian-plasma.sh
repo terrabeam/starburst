@@ -38,7 +38,7 @@ if [[ -z "$DDE" ]]; then
     tput_reset
 
     sudo apt update
-    sudo apt install -y --no-install-recommends plasma-desktop dolphin konsole kate plasma-nm sddm
+    sudo apt install -y --no-install-recommends plasma-desktop dolphin konsole kate plasma-nm sddm plasma-workspace kde-config-gtk-style kde-config-sddm plasma-discover plasma-discover-backend-snap plasma-discover-backend-flatpak
 
     # Enable SDDM as the display manager
     sudo systemctl enable sddm
@@ -48,8 +48,8 @@ if [[ -z "$DDE" ]]; then
 
     tput_green
     echo
-    echo "XFCE with SDDM installed successfully."
-    echo "You can reboot now to start XFCE."
+    echo "KDE Plasma with SDDM installed successfully."
+    echo "You can reboot now to start KDE Plasma."
     tput_reset
 else
     tput_cyan
@@ -89,8 +89,8 @@ fi
 
 #cleanup unwanted packages
     # Packages to remove
-    packages=("vim" "vim-runtime" "vim-common" "vim-tiny" "mousepad" "parole" "xfburn" "xfce4-screenshooter" "xfce4-notes")  
-    sudo apt-mark manual xfce4-goodies
+    #packages=("vim" "vim-runtime" "vim-common" "vim-tiny" "mousepad" "parole")  
+    #sudo apt-mark manual xfce4-goodies
     
     # Function to check if a package is installed
     is_package_installed() {

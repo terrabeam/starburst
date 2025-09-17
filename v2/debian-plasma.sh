@@ -38,10 +38,13 @@ if [[ -z "$DDE" ]]; then
     tput_reset
 
     sudo apt update
-    sudo apt install -y --no-install-recommends xfce4 xfce4-goodies sddm
+    sudo apt install -y --no-install-recommends plasma-desktop dolphin konsole kate plasma-nm kde-config-systemd kde-spectacle sddm
 
     # Enable SDDM as the display manager
     sudo systemctl enable sddm
+
+    # Enable graphical target
+    sudo systemctl set-default graphical.target
 
     tput_green
     echo
@@ -68,6 +71,9 @@ else
         # Install and enable SDDM
         sudo apt install -y sddm
         sudo systemctl enable sddm
+
+        # Enable graphical target
+        sudo systemctl set-default graphical.target
 
         tput_green
         echo

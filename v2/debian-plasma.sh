@@ -59,6 +59,9 @@ if [[ -z "$DDE" ]]; then
     # Enable graphical target
     sudo systemctl set-default graphical.target
 
+    # Rebuild Discover cache
+    kbuildsycoca6
+
     tput_green
     echo
     echo "KDE Plasma with SDDM installed successfully."

@@ -116,6 +116,10 @@ fi
         echo "----------------------------"
     done
 
+    # Resolving network issues
+    sudo mv /etc/network/interfaces /etc/network/interfaces.bak
+    sudo systemctl restart NetworkManager
+
     # Remove leftover dependencies
     sudo apt-get autoremove -y
 

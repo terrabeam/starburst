@@ -48,9 +48,10 @@ if [[ -z "$DDE" ]]; then
     kde-config-gtk-style \
     kde-config-sddm \
     plasma-discover \
+    plasma-discover-common \
     plasma-discover-backend-snap \
     plasma-discover-backend-flatpak \
-    plasma-discover-backend-packagekit
+    plasma-discover-backend-fwupd
 
     # Enable SDDM as the display manager
     sudo systemctl enable sddm

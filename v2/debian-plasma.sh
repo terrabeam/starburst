@@ -51,7 +51,8 @@ if [[ -z "$DDE" ]]; then
     plasma-discover-common \
     plasma-discover-backend-snap \
     plasma-discover-backend-flatpak \
-    plasma-discover-backend-fwupd
+    plasma-discover-backend-fwupd \
+    kscreen
 
     # Enable SDDM as the display manager
     sudo systemctl enable sddm

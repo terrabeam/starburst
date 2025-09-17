@@ -27,20 +27,27 @@ INSTALL_LEVEL="${INSTALL_LEVEL:-minimal}"
 # 4. Desktop Environment installation
 ##########################
 tput_yellow
-echo "Installing XFCE..."
+echo "Installing Gnome..."
 tput_reset
 
-#detect if XFCE and SDDM are installed and if not install them
+#detect if Gnome and SDDM are installed and if not install them
 if [[ -z "$DDE" ]]; then
     tput_cyan
     echo
-    echo "No Desktop Environment detected. Installing XFCE (light setup with SDDM)..."
+    echo "No Desktop Environment detected. Installing Gnome (light setup with SDDM)..."
     tput_reset
 
     sudo apt update
     sudo apt install -y --no-install-recommends sddm \
-    xfce4 \
-    xfce4-goodies
+    gnome-shell \
+    gnome-terminal \
+    nautilus \
+    gnome-control-center \
+    gnome-system-monitor \
+    gnome-settings-daemon \
+    gnome-tweaks \
+    network-manager-gnome \
+    gnome-keyring
 
     # Enable SDDM as the display manager
     sudo systemctl enable sddm
@@ -50,8 +57,8 @@ if [[ -z "$DDE" ]]; then
 
     tput_green
     echo
-    echo "XFCE with SDDM installed successfully."
-    echo "You can reboot now to start XFCE."
+    echo "Gnome with SDDM installed successfully."
+    echo "You can reboot now to start Gnome."
     tput_reset
 else
     tput_cyan
@@ -74,6 +81,9 @@ else
         sudo apt install -y sddm
         sudo systemctl enable sddm
 
+        # Enable graphical target
+        sudo systemctl set-default graphical.target
+
         tput_green
         echo
         echo "LightDM removed and replaced with SDDM."
@@ -88,8 +98,8 @@ fi
 
 #cleanup unwanted packages
     # Packages to remove
-    packages=("vim" "vim-runtime" "vim-common" "vim-tiny" "mousepad" "parole" "xfburn" "xfce4-screenshooter" "xfce4-notes")  
-    sudo apt-mark manual xfce4-goodies
+    #packages=("vim" "vim-runtime" "vim-common" "vim-tiny" "mousepad" "parole")  
+    #sudo apt-mark manual xfce4-goodies
     
     # Function to check if a package is installed
     is_package_installed() {
@@ -114,6 +124,10 @@ fi
 
         echo "----------------------------"
     done
+
+    # Resolving network issues
+    sudo mv /etc/network/interfaces /etc/network/interfaces.bak
+    sudo systemctl restart NetworkManager
 
     # Remove leftover dependencies
     sudo apt-get autoremove -y

@@ -27,14 +27,14 @@ INSTALL_LEVEL="${INSTALL_LEVEL:-minimal}"
 # 4. Desktop Environment installation
 ##########################
 tput_yellow
-echo "Installing XFCE..."
+echo "Installing KDE Plasma..."
 tput_reset
 
-#detect if XFCE and SDDM are installed and if not install them
+#detect if KDE Plasma and SDDM are installed and if not install them
 if [[ -z "$DDE" ]]; then
     tput_cyan
     echo
-    echo "No Desktop Environment detected. Installing XFCE (light setup with SDDM)..."
+    echo "No Desktop Environment detected. Installing KDE Plasma (light setup with SDDM)..."
     tput_reset
 
     sudo apt update

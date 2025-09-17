@@ -38,7 +38,7 @@ if [[ -z "$DDE" ]]; then
     tput_reset
 
     sudo apt update
-    sudo apt install -y --no-install-recommends plasma-desktop dolphin konsole kate plasma-nm kde-config-systemd kde-spectacle sddm
+    sudo apt install -y --no-install-recommends plasma-desktop dolphin konsole kate plasma-nm sddm
 
     # Enable SDDM as the display manager
     sudo systemctl enable sddm

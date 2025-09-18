@@ -117,7 +117,9 @@ read -n 1 -s -r -p "Press any key to continue"
         libpam0g \
         libpam-modules \
         libpam-runtim \
-        avahi
+        avahi-daemon \
+        avahi-utils \
+        libnss-mdns
 
         if [ ! -f /usr/bin/duf ]; then
         sudo apt install -y duf

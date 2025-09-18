@@ -130,7 +130,7 @@ read -n 1 -s -r -p "Press any key to continue"
         manpages \
         tree \
         xdg-user-dirs \
-        policykit-1-gnome \
+        mate-polkit \
         rsync \
         time \
         bat \

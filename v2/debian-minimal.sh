@@ -59,10 +59,25 @@ read -n 1 -s -r -p "Press any key to continue"
 
     # install needed packages
         #firmwares
-        sudo apt-get install -y dkms linux-headers-$(uname -r)
+        sudo apt-get install -y \
+        dkms \
+        linux-headers-$(uname -r)
 
         #fonts
-        sudo apt install -y font-manager adobe-source-sans-fonts noto-fonts ttf-bitstream-vera ttf-dejavu ttf-droid ttf-hack ttf-inconsolata ttf-liberation ttf-roboto ttf-roboto-mono ttf-ubuntu-font-family terminus-font awesome-terminal-fonts ttf-jetbrains-mono-nerd
+        sudo apt install -y \
+        font-manager \
+        fonts-source-sans \
+        fonts-noto \
+        fonts-bitstream-vera \
+        fonts-dejavu \
+        fonts-droid-fallback \
+        fonts-hack \
+        fonts-inconsolata \
+        fonts-liberation \
+        fonts-roboto \
+        fonts-roboto-mono \
+        fonts-ubuntu \
+        fonts-terminus
 
         #tools
         sudo apt install -y wget curl nano fastfetch lolcat bash-completion starship alacritty hwinfo lshw reflector expac betterlockscreen pam avahi

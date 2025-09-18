@@ -66,18 +66,40 @@ read -n 1 -s -r -p "Press any key to continue"
         #fonts
         sudo apt install -y \
         font-manager \
-        fonts-source-sans \
+        fonts-adobe-source-sans-pro \
         fonts-noto \
-        fonts-bitstream-vera \
+        fonts-vera \
         fonts-dejavu \
         fonts-droid-fallback \
         fonts-hack \
         fonts-inconsolata \
         fonts-liberation \
         fonts-roboto \
-        fonts-roboto-mono \
         fonts-ubuntu \
         fonts-terminus
+
+        # Install RobotoMono Nerd Font
+            # Destination directory
+            FONT_DIR="$HOME/.local/share/fonts"
+            mkdir -p "$FONT_DIR"
+
+            # Download RobotoMono Nerd Font (latest release)
+            ZIP_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/RobotoMono.zip"
+            TMP_DIR="$(mktemp -d)"
+
+            echo "Downloading RobotoMono Nerd Font..."
+            curl -L "$ZIP_URL" -o "$TMP_DIR/RobotoMono.zip"
+
+            echo "Extracting..."
+            unzip -q "$TMP_DIR/RobotoMono.zip" -d "$FONT_DIR"
+
+            echo "Cleaning up..."
+            rm -rf "$TMP_DIR"
+
+            echo "Updating font cache..."
+            fc-cache -fv
+
+            echo "RobotoMono Nerd Font installed successfully in $FONT_DIR"
 
         #tools
         sudo apt install -y wget curl nano fastfetch lolcat bash-completion starship alacritty hwinfo lshw reflector expac betterlockscreen pam avahi

@@ -134,8 +134,7 @@ read -n 1 -s -r -p "Press any key to continue"
         rsync \
         time \
         bat \
-        ntp \
-        nss-mdns
+        chrony
 
         #theming
         sudo apt install -y \
@@ -144,7 +143,7 @@ read -n 1 -s -r -p "Press any key to continue"
 
         #enable services
         sudo systemctl enable avahi-daemon.service
-        sudo systemctl enable ntpd.service
+        sudo systemctl enable chrony
 
         #Run service that will discard unused blocks on mounted filesystems. This is useful for solid-state drives (SSDs) and thinly-provisioned storage. 
         echo

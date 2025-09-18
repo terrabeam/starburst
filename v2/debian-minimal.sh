@@ -160,12 +160,14 @@ read -n 1 -s -r -p "Press any key to continue"
         arc-theme
 
         echo "Installing Surfn icon theme..."
-        # Clone Surfn repo and run install
+        # Clone Surfn repo
         TEMP_DIR=$(mktemp -d)
         git clone https://github.com/erikdubois/Surfn.git "$TEMP_DIR/surfn"
         cd "$TEMP_DIR/surfn"
-        chmod +x install.sh
-        ./install.sh --local   # installs to ~/.icons
+
+        # Copy the icon theme to the user's local icons directory
+        cp -r surfn-icons ~/.icons/
+
         cd ~
         rm -rf "$TEMP_DIR"
         echo "Surfn icon theme installed."

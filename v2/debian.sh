@@ -318,29 +318,27 @@ esac
 # 6. Installation level handling
 ##########################
 case "$INSTALL_LEVEL" in
-    minimal)
+    minimal|full|workstation|server)
         tput_cyan
         echo
         echo "Minimal installation selected."
         tput_reset
-        ;;
-    full)
-        tput_cyan
-        echo
-        echo "Full installation selected."
-        tput_reset
-        ;;
-    workstation)
-        tput_cyan
-        echo
-        echo "Workstation installation selected."
-        tput_reset
-        ;;
-    server)
-        tput_cyan
-        echo
-        echo "Server installation selected."
-        tput_reset
+
+        # Run Installation Level-specific script dynamically
+        SCRIPT_NAME="${OS}-${INSTALL_LEVEL}.sh"
+        if [[ -f "$SCRIPT_NAME" ]]; then
+            tput_cyan
+            echo
+            echo "Running $SCRIPT_NAME..."
+            tput_reset
+            bash "$SCRIPT_NAME"
+        else
+            tput_red
+            echo
+            echo "Error: $SCRIPT_NAME not found!"
+            tput_reset
+            exit 1
+        fi
         ;;
 esac
 

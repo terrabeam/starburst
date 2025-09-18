@@ -284,19 +284,27 @@ esac
 # 5. Tiling Window Manager installation
 ##########################
 case "$TWM" in
-    chadwm)
+    chadwm|hyprland)
         tput_yellow
         echo
         echo "Installing CHADWM..."
         tput_reset
-        # add CHADWM install commands here
-        ;;
-    hyprland)
-        tput_yellow
-        echo
-        echo "Installing Hyprland..."
-        tput_reset
-        # add Hyprland install commands here
+
+        # Run TWM-specific script dynamically
+        SCRIPT_NAME="${OS}-${TWM}.sh"
+        if [[ -f "$SCRIPT_NAME" ]]; then
+            tput_cyan
+            echo
+            echo "Running $SCRIPT_NAME..."
+            tput_reset
+            bash "$SCRIPT_NAME"
+        else
+            tput_red
+            echo
+            echo "Error: $SCRIPT_NAME not found!"
+            tput_reset
+            exit 1
+        fi
         ;;
     none)
         tput_gray

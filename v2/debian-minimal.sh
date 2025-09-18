@@ -173,15 +173,30 @@ read -n 1 -s -r -p "Press any key to continue"
         echo "Surfn icon theme installed."
 
         echo "Installing Flat Remix Dark GTK theme..."
-        # Download latest Flat Remix GTK release
         TEMP_DIR=$(mktemp -d)
         cd "$TEMP_DIR"
-        wget -O flat-remix-gtk.tar.xz https://github.com/daniruiz/flat-remix-gtk/archive/refs/heads/master.tar.gz
-        tar -xf flat-remix-gtk.tar.xz
-        # Move extracted theme to ~/.themes
-        mv flat-remix-gtk-master/Flat-Remix-Dark ~/.themes/
+
+        # Download latest master as tar.gz
+        wget -O flat-remix-gtk.tar.gz https://github.com/daniruiz/flat-remix-gtk/archive/refs/heads/master.tar.gz
+
+        # Extract
+        tar -xzf flat-remix-gtk.tar.gz
+
+        # Move the Dark GTK theme to ~/.themes
+        mkdir -p ~/.themes
+        # The actual theme folder is usually named "Flat-Remix-Dark" inside the extracted directory
+        # Find it dynamically
+        THEME_DIR=$(find . -type d -name "Flat-Remix-Dark" | head -n 1)
+        if [ -z "$THEME_DIR" ]; then
+            echo "Error: Flat-Remix-Dark theme folder not found!"
+            exit 1
+        fi
+
+        mv "$THEME_DIR" ~/.themes/
+
         cd ~
         rm -rf "$TEMP_DIR"
+
         echo "Flat Remix Dark GTK theme installed."
 
         #internet

@@ -25,3 +25,23 @@ INSTALL_LEVEL="${INSTALL_LEVEL:-minimal}"
 
 # Pause
 read -n 1 -s -r -p "Press any key to continue"
+
+# Before running FULL first run Minimal
+bash debian-minimal.sh
+
+# Now continue with FULL
+    # install tools
+     sudo apt install -y \
+     arandr \
+     catfish \
+     galculator \
+     network-manager \
+     network-manager-applet \
+     network-manager-openvpn \
+     numlockx \
+     pavucontrol \
+     playerctl \
+     xcolors \
+     gparted
+
+     

@@ -27,6 +27,23 @@ INSTALL_LEVEL="${INSTALL_LEVEL:-minimal}"
 read -n 1 -s -r -p "Press any key to continue"
 
 # on all DE
+    #################################################################
+    # Create directories (skel + user)
+    #################################################################
+    echo
+    tput setaf 2
+    echo "########################################################################"
+    echo "################### Creating directories"
+    echo "########################################################################"
+    tput sgr0
+    echo
+
+    sudo mkdir -p /etc/skel/.config/xfce4/{panel,xfconf}
+    mkdir -p \
+        "$HOME"/{.bin,.fonts,.icons,.themes,DATA} \
+        "$HOME/.local/share/"{icons,themes,applications} \
+        "$HOME/.config/"{autostart,gtk-{3.0,4.0},variety,fish,neofetch}
+
     # Packages to remove
     packages=("vim" "vim-runtime" "vim-common" "vim-tiny" "mousepad" "parole")  
     
@@ -139,7 +156,35 @@ read -n 1 -s -r -p "Press any key to continue"
         #theming
         sudo apt install -y \
         bibata-cursor-theme \
-        feh
+        feh \
+        arc-gtk-theme
+
+        echo "Installing Surfn icon theme..."
+        # Clone Surfn repo and run install
+        TEMP_DIR=$(mktemp -d)
+        git clone https://github.com/erikdubois/Surfn.git "$TEMP_DIR/surfn"
+        cd "$TEMP_DIR/surfn"
+        chmod +x install.sh
+        ./install.sh --local   # installs to ~/.icons
+        cd ~
+        rm -rf "$TEMP_DIR"
+        echo "Surfn icon theme installed."
+
+        echo "Installing Flat Remix Dark GTK theme..."
+        # Download latest Flat Remix GTK release
+        TEMP_DIR=$(mktemp -d)
+        cd "$TEMP_DIR"
+        wget -O flat-remix-gtk.tar.xz https://github.com/daniruiz/flat-remix-gtk/archive/refs/heads/master.tar.gz
+        tar -xf flat-remix-gtk.tar.xz
+        # Move extracted theme to ~/.themes
+        mv flat-remix-gtk-master/Flat-Remix-Dark ~/.themes/
+        cd ~
+        rm -rf "$TEMP_DIR"
+        echo "Flat Remix Dark GTK theme installed."
+
+        #internet
+        sudo apt install -y \
+        chromium
 
         #enable services
         sudo systemctl enable avahi-daemon.service
@@ -182,6 +227,21 @@ read -n 1 -s -r -p "Press any key to continue"
 # if on XFCE
 case "$DE" in
     xfce)
+        #################################################################
+        # Create directories (skel + user)
+        #################################################################
+        echo
+        tput setaf 2
+        echo "########################################################################"
+        echo "################### Creating directories"
+        echo "########################################################################"
+        tput sgr0
+        echo
+
+        sudo mkdir -p /etc/skel/.config/xfce4/{panel,xfconf}
+        mkdir -p \
+            "$HOME/.config/"{xfce4,xfce4/xfconf}
+        
         # cleanup unwanted packages
         tput_yellow
         echo

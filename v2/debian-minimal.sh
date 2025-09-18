@@ -116,7 +116,8 @@ read -n 1 -s -r -p "Press any key to continue"
         lshw \
         libpam0g \
         libpam-modules \
-        libpam-runtim \
+        libpam-runtime \
+        libpam-modules-bin \
         avahi-daemon \
         avahi-utils \
         libnss-mdns

@@ -138,7 +138,7 @@ read -n 1 -s -r -p "Press any key to continue"
 
         #theming
         sudo apt install -y \
-        bibata-cursor-theme-bin \
+        bibata-cursor-theme \
         feh
 
         #enable services

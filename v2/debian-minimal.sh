@@ -63,6 +63,9 @@ read -n 1 -s -r -p "Press any key to continue"
         dkms \
         linux-headers-$(uname -r)
 
+        #archive-managers
+        sudo apt install -y zip gzip p7zip unace unrar unzip
+        
         #fonts
         sudo apt install -y \
         font-manager \
@@ -105,9 +108,6 @@ read -n 1 -s -r -p "Press any key to continue"
         sudo apt install -y duf
         fi
         sudo apt install -y man-db man-pages tree xdg-user-dirs polkit-gnome rate-mirrors rsync time bat ntp nss-mdns
-
-        #archive-managers
-        sudo apt install -y zip gzip p7zip unace unrar unzip
 
         #theming
         sudo apt install -y bibata-cursor-theme-bin feh

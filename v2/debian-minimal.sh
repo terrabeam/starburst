@@ -165,7 +165,7 @@ read -n 1 -s -r -p "Press any key to continue"
         git clone https://github.com/erikdubois/Surfn.git "$TEMP_DIR/surfn"
         cd "$TEMP_DIR/surfn"
         # Copy the icon theme to the user's local icons directory
-        cp -r surfn-icons ~/.icons/
+        cp -r surfn-icons/* ~/.icons/
         cd ~
         rm -rf "$TEMP_DIR"
         echo "Surfn icon theme installed."
@@ -179,7 +179,7 @@ read -n 1 -s -r -p "Press any key to continue"
         tar -xzf flat-remix-gtk.tar.gz
         # Move the Dark GTK theme to ~/.themes
         # The actual theme folder is "Flat-Remix-Dark" inside the extracted directory
-        mv flat-remix-gtk-master/themes/Flat-Remix-Dark ~/.themes/
+        mv flat-remix-gtk-master/themes/* ~/.themes/
         cd ~
         rm -rf "$TEMP_DIR"
         echo "Flat Remix Dark GTK theme installed."

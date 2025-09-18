@@ -66,9 +66,7 @@ read -n 1 -s -r -p "Press any key to continue"
         #fonts
         sudo apt install -y \
         font-manager \
-        fonts-adobe-source-sans-pro \
         fonts-noto \
-        fonts-vera \
         fonts-dejavu \
         fonts-droid-fallback \
         fonts-hack \

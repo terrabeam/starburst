@@ -103,14 +103,41 @@ read -n 1 -s -r -p "Press any key to continue"
             echo "RobotoMono Nerd Font installed successfully in $FONT_DIR"
 
         #tools
-        sudo apt install -y wget curl nano fastfetch lolcat bash-completion starship alacritty hwinfo lshw reflector expac betterlockscreen pam avahi
+        sudo apt install -y \
+        wget \
+        curl \
+        nano \
+        fastfetch \
+        lolcat \
+        bash-completion \
+        starship \
+        alacritty \
+        hwinfo \
+        lshw \
+        libpam0g \
+        libpam-modules \
+        libpam-runtim \
+        avahi
+
         if [ ! -f /usr/bin/duf ]; then
         sudo apt install -y duf
         fi
-        sudo apt install -y man-db man-pages tree xdg-user-dirs polkit-gnome rate-mirrors rsync time bat ntp nss-mdns
+        sudo apt install -y \
+        man-db \
+        manpages \
+        tree \
+        xdg-user-dirs \
+        policykit-1-gnome \
+        rsync \
+        time \
+        bat \
+        ntp \
+        nss-mdns
 
         #theming
-        sudo apt install -y bibata-cursor-theme-bin feh
+        sudo apt install -y \
+        bibata-cursor-theme-bin \
+        feh
 
         #enable services
         sudo systemctl enable avahi-daemon.service

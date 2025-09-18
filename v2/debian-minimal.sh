@@ -157,7 +157,7 @@ read -n 1 -s -r -p "Press any key to continue"
         sudo apt install -y \
         bibata-cursor-theme \
         feh \
-        arc-gtk-theme
+        arc-theme
 
         echo "Installing Surfn icon theme..."
         # Clone Surfn repo and run install

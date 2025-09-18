@@ -25,3 +25,148 @@ INSTALL_LEVEL="${INSTALL_LEVEL:-minimal}"
 
 # Pause
 read -n 1 -s -r -p "Press any key to continue"
+
+# on all DE
+    # Packages to remove
+    packages=("vim" "vim-runtime" "vim-common" "vim-tiny" "mousepad" "parole")  
+    
+    # Function to check if a package is installed
+    is_package_installed() {
+        dpkg -s "$1" &> /dev/null
+    }
+
+    # Iterate over each package
+    for package in "${packages[@]}"; do
+        if is_package_installed "$package"; then
+            echo "Removing $package..."
+            sudo apt-get purge -y "$package"
+        else
+            echo "$package is not installed, skipping."
+        fi
+
+        # Optional double-check
+        if ! is_package_installed "$package"; then
+            echo "$package successfully removed."
+        else
+            echo "$package is still installed. Check manually."
+        fi
+
+        echo "----------------------------"
+    done
+
+    # Remove leftover dependencies
+    sudo apt-get autoremove -y
+
+    # install needed packages
+        #firmwares
+        sudo apt-get install -y dkms linux-headers-$(uname -r)
+
+        #fonts
+        sudo apt install -y font-manager adobe-source-sans-fonts noto-fonts ttf-bitstream-vera ttf-dejavu ttf-droid ttf-hack ttf-inconsolata ttf-liberation ttf-roboto ttf-roboto-mono ttf-ubuntu-font-family terminus-font awesome-terminal-fonts ttf-jetbrains-mono-nerd
+
+        #tools
+        sudo apt install -y wget curl nano fastfetch lolcat bash-completion starship alacritty hwinfo lshw reflector expac betterlockscreen pam avahi
+        if [ ! -f /usr/bin/duf ]; then
+        sudo apt install -y duf
+        fi
+        sudo apt install -y man-db man-pages tree xdg-user-dirs polkit-gnome rate-mirrors rsync time bat ntp nss-mdns
+
+        #archive-managers
+        sudo apt install -y zip gzip p7zip unace unrar unzip
+
+        #theming
+        sudo apt install -y bibata-cursor-theme-bin feh
+
+        #enable services
+        sudo systemctl enable avahi-daemon.service
+        sudo systemctl enable ntpd.service
+
+        #Run service that will discard unused blocks on mounted filesystems. This is useful for solid-state drives (SSDs) and thinly-provisioned storage. 
+        echo
+        echo "Enable fstrim timer"
+        sudo systemctl enable fstrim.timer
+
+        echo
+        tput setaf 3
+        echo "########################################################################"
+        echo "Detecting virtualization platform..."
+        echo "########################################################################"
+        tput sgr0
+        echo
+
+        virt_type=$(systemd-detect-virt)
+
+        case "$virt_type" in
+            kvm)
+                echo "Detected KVM. Installing qemu-guest-agent..."
+                sudo apt install -y qemu-guest-agent spice-vdagent
+                sudo systemctl enable qemu-guest-agent.service
+                ;;
+            oracle)
+                echo "Detected VirtualBox. Installing virtualbox-guest-utils..."
+                sudo apt install -y virtualbox-guest-utils
+                sudo systemctl enable vboxservice.service
+                ;;
+            none)
+                echo "No virtualization detected. Skipping guest utilities."
+                ;;
+            *)
+                echo "Virtualization detected: $virt_type, but no install routine defined."
+                ;;
+        esac
+
+# if on XFCE
+case "$DE" in
+    xfce)
+        # cleanup unwanted packages
+        tput_yellow
+        echo
+        echo "Removing unwanted packages from $DE..."
+        tput_reset
+
+        # Packages to remove
+        packages=("xfburn" "xfce4-screenshooter" "xfce4-notes")  
+        sudo apt-mark manual xfce4-goodies
+        
+        # Function to check if a package is installed
+        is_package_installed() {
+            dpkg -s "$1" &> /dev/null
+        }
+
+        # Iterate over each package
+        for package in "${packages[@]}"; do
+            if is_package_installed "$package"; then
+                echo "Removing $package..."
+                sudo apt-get purge -y "$package"
+            else
+                echo "$package is not installed, skipping."
+            fi
+
+            # Optional double-check
+            if ! is_package_installed "$package"; then
+                echo "$package successfully removed."
+            else
+                echo "$package is still installed. Check manually."
+            fi
+
+            echo "----------------------------"
+        done
+
+        # Remove leftover dependencies
+        sudo apt-get autoremove -y
+
+        # install needed packages
+            #tools
+            sudo apt install -y thunar thunar-archive-plugin thunar-volman
+
+            #archive-managers
+            sudo apt install -y file-roller
+
+
+        ;;
+esac
+
+
+
+
+

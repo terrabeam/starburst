@@ -22,3 +22,6 @@ DDE="${DETECTED_DE}"
 DE="${SELECTED_DE:-none}"
 TWM="${SELECTED_TWM:-none}"
 INSTALL_LEVEL="${INSTALL_LEVEL:-minimal}"
+
+# Pause
+read -n 1 -s -r -p "Press any key to continue"
